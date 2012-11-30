@@ -107,13 +107,18 @@ PRODUCT_PACKAGES += \
 
 # Prebuilt audio libs
 PRODUCT_COPY_FILES += \
-    device/hp/tenderloin/prebuilt/audio/lib/audio_policy.conf:system/lib/audio_policy.conf \
+    device/hp/tenderloin/prebuilt/etc/audio_policy.conf:system/etc/audio_policy.conf \
     device/hp/tenderloin/prebuilt/audio/lib/liba2dp.so:system/lib/liba2dp.so \
+    device/hp/tenderloin/prebuilt/audio/lib/libtinyalsa.so:system/lib/libtinyalsa.so \
+    device/hp/tenderloin/prebuilt/audio/lib/libbinder.so:system/lib/libbinder.so \
+    device/hp/tenderloin/prebuilt/audio/lib/libjpeg.so:system/lib/libjpeg.so \
+    device/hp/tenderloin/prebuilt/audio/lib/libwebcore.so:system/lib/libwebcore.so \
+    device/hp/tenderloin/prebuilt/audio/lib/libjackpal-androidterm4.so:system/lib/liblibjackpal-androidterm4.so \
     device/hp/tenderloin/prebuilt/audio/lib/libasound.so:system/lib/libasound.so \
     device/hp/tenderloin/prebuilt/audio/lib/libaudiopolicy.so:system/lib/libaudiopolicy.so \
     device/hp/tenderloin/prebuilt/audio/lib/libaudio.so:system/lib/libaudio.so \
-    device/hp/tenderloin/prebuilt/audio/lib/mixer_paths.xml:system/lib/mixer_paths.xml \
-    device/hp/tenderloin/prebuilt/audio/lib/NOTICE.html.gz:system/lib/NOTICE.html.gz \
+    device/hp/tenderloin/prebuilt/etc/mixer_paths.xml:system/etc/mixer_paths.xml \
+    device/hp/tenderloin/prebuilt/etc/NOTICE.html.gz:system/etc/NOTICE.html.gz \
     device/hp/tenderloin/prebuilt/audio/lib/hw/alsa.tenderloin.so:system/lib/hw/alsa.tenderloin.so \
     device/hp/tenderloin/prebuilt/audio/lib/hw/audio.primary.tenderloin.so:system/lib/hw/audio.primary.tenderloin.so \
 
