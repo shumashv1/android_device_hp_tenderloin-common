@@ -185,7 +185,12 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/modules/cifs.ko:system/lib/modules/cifs.ko \
     device/hp/tenderloin/prebuilt/modules/ntfs.ko:system/lib/modules/ntfs.ko \
     device/hp/tenderloin/prebuilt/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
-    device/hp/tenderloin/prebuilt/modules/tun.ko:system/lib/modules/tun.ko
+    device/hp/tenderloin/prebuilt/modules/tun.ko:system/lib/modules/tun.ko \
+    device/hp/tenderloin/prebuilt/modules/lcd.ko:system/lib/modules/lcd.ko \
+    device/hp/tenderloin/prebuilt/modules/oprofile.ko:system/lib/modules/oprofile.ko \
+    device/hp/tenderloin/prebuilt/modules/sunrpc.ko:system/lib/modules/sunrpc.ko \
+    device/hp/tenderloin/prebuilt/modules/nfs.ko:system/lib/modules/nfs.ko \
+    device/hp/tenderloin/prebuilt/modules/lockd.ko:system/lib/modules/lockd.ko \
 
 # Wifi Modules
 PRODUCT_COPY_FILES += \
@@ -194,7 +199,7 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/wifi/cfg80211.ko:system/lib/modules/cfg80211.ko \
     device/hp/tenderloin/prebuilt/wifi/mac80211.ko:system/lib/modules/mac80211.ko \
     device/hp/tenderloin/prebuilt/wifi/compat.ko:system/lib/modules/compat.ko \
-    device/hp/tenderloin/prebuilt/wifi/sch_codel.ko:system/lib/modules/sch_codel.ko
+    device/hp/tenderloin/prebuilt/wifi/sch_codel.ko:system/lib/modules/sch_codel.ko \
     device/hp/tenderloin/prebuilt/wifi/sch_fq_codel.ko:system/lib/modules/sch_fw_codel.ko
 
 #Wifi Firmware
