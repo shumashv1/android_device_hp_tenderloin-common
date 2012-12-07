@@ -32,4 +32,8 @@ LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 LOCAL_SHARED_LIBRARIES := libutils libui libcamera_client liblog libcutils
 LOCAL_SHARED_LIBRARIES += libbinder libdl libhardware
 
+ifeq ($(BOARD_DEBUG_MEMLEAKS),true)
+    LOCAL_SHARED_LIBRARIES += libheaptracker
+endif
+
 include $(BUILD_SHARED_LIBRARY)
