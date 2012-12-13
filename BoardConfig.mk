@@ -1,7 +1,7 @@
 # inherit from the proprietary version
 -include vendor/hp/tenderloin/BoardConfigVendor.mk
 
-TARGET_SPECIFIC_HEADER_PATH := device/hp/tenderloin/include 
+TARGET_SPECIFIC_HEADER_PATH := device/hp/tenderloin/include
 
 # We have so much memory 3:1 split is detrimental to us.
 TARGET_USES_2G_VM_SPLIT := true
@@ -33,6 +33,9 @@ TARGET_SCORPION_BIONIC_PLDSIZE := 128
 
 COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=59 -DQCOM_HARDWARE
 
+# Boot animation
+TARGET_SCREEN_HEIGHT := 768
+TARGET_SCREEN_WIDTH := 1024
 
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
@@ -110,8 +113,9 @@ TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
 
 # Define Prebuilt kernel locations
 TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
-
+BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/hp/tenderloin/recovery/recovery_ui.c
 TARGET_RECOVERY_INITRC := device/hp/tenderloin/recovery/init.rc
+BOARD_HAS_NO_SELECT_BUTTON := false
 
 # tenderloin - these partition sizes are temporary to complete build
 TARGET_USERIMAGES_USE_EXT4 := true
