@@ -240,6 +240,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/wifi/ath6k/AR6003/hw2.1.1/bdata.SD32.bin:/system/etc/firmware/ath6k/AR6003/hw2.1.1/bdata.bin
 
+# jcsullins kernel image
+PRODUCT_COPY_FILES += \
+    device/hp/tenderloin/prebuilt/boot.img:out/target/product/tenderloin/boot.img \
+
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
