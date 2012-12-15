@@ -194,6 +194,17 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/modules/nfs.ko:system/lib/modules/nfs.ko \
     device/hp/tenderloin/prebuilt/modules/lockd.ko:system/lib/modules/lockd.ko \
 
+# egl Modules
+PRODUCT_COPY_FILES += \
+    device/hp/tenderloin/prebuilt/egl/egl.cfg:system/lib/egl/egl.cfg \
+    device/hp/tenderloin/prebuilt/egl/eglsubAndroid.so:system/lib/egl/eglsubAndroid.so \
+    device/hp/tenderloin/prebuilt/egl/libEGL_adreno200.so:system/lib/egl/libEGL_adreno200.so \
+    device/hp/tenderloin/prebuilt/egl/libGLES_android.so:system/lib/egl/libGLES_android.so \
+    device/hp/tenderloin/prebuilt/egl/libGLESv1_CM_adreno200.so:system/lib/egl/libGLESv1_CM_adreno200.so \
+    device/hp/tenderloin/prebuilt/egl/libGLESv2_adreno200.so:system/lib/egl/libGLESv2_adreno200.so \
+    device/hp/tenderloin/prebuilt/egl/libGLESv2S3D_adreno200.so:system/lib/egl/libGLESv2S3D_adreno200.so \
+    device/hp/tenderloin/prebuilt/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so \
+
 # Wifi Modules
 PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/wifi/ath6kl.ko:system/lib/modules/ath6kl.ko \
