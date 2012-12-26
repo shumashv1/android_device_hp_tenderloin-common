@@ -115,20 +115,21 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/audio/lib/libbinder.so:system/lib/libbinder.so \
     device/hp/tenderloin/prebuilt/audio/lib/libjpeg.so:system/lib/libjpeg.so \
     device/hp/tenderloin/prebuilt/audio/lib/libwebcore.so:system/lib/libwebcore.so \
-    device/hp/tenderloin/prebuilt/audio/lib/libjackpal-androidterm4.so:system/lib/liblibjackpal-androidterm4.so \
+    device/hp/tenderloin/prebuilt/audio/lib/libjackpal-androidterm4.so:system/lib/libjackpal-androidterm4.so \
     device/hp/tenderloin/prebuilt/audio/lib/libasound.so:system/lib/libasound.so \
     device/hp/tenderloin/prebuilt/audio/lib/libaudiopolicy.so:system/lib/libaudiopolicy.so \
     device/hp/tenderloin/prebuilt/audio/lib/libaudio.so:system/lib/libaudio.so \
     device/hp/tenderloin/prebuilt/etc/mixer_paths.xml:system/etc/mixer_paths.xml \
     device/hp/tenderloin/prebuilt/etc/NOTICE.html.gz:system/etc/NOTICE.html.gz \
-    device/hp/tenderloin/prebuilt/audio/lib/hw/alsa.tenderloin.so:system/lib/hw/alsa.tenderloin.so \
-    device/hp/tenderloin/prebuilt/audio/lib/hw/audio.primary.tenderloin.so:system/lib/hw/audio.primary.tenderloin.so \
+    device/hp/tenderloin/prebuilt/audio/lib/hw/audio.primary.tenderloin.so:system/lib/hw/audio.primary.tenderloin.so 
+
+#    device/hp/tenderloin/prebuilt/audio/lib/hw/alsa.tenderloin.so:system/lib/hw/alsa.tenderloin.so \
 
 # Prebuilt audio libs needed to compile other libs
 PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/audio/lib/libaudio.so:obj/lib/libaudio.so \
     device/hp/tenderloin/prebuilt/audio/lib/libaudiopolicy.so:obj/lib/libaudiopolicy.so \
-	device/hp/tenderloin/prebuilt/audio/lib/liba2dp.so:obj/lib/liba2dp.so
+    device/hp/tenderloin/prebuilt/audio/lib/liba2dp.so:obj/lib/liba2dp.so
 
 # Prebuilt alsa configs
 PRODUCT_COPY_FILES += \
@@ -194,6 +195,17 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/modules/nfs.ko:system/lib/modules/nfs.ko \
     device/hp/tenderloin/prebuilt/modules/lockd.ko:system/lib/modules/lockd.ko \
 
+# egl Modules
+PRODUCT_COPY_FILES += \
+    device/hp/tenderloin/prebuilt/egl/egl.cfg:system/lib/egl/egl.cfg \
+    device/hp/tenderloin/prebuilt/egl/eglsubAndroid.so:system/lib/egl/eglsubAndroid.so \
+    device/hp/tenderloin/prebuilt/egl/libEGL_adreno200.so:system/lib/egl/libEGL_adreno200.so \
+    device/hp/tenderloin/prebuilt/egl/libGLES_android.so:system/lib/egl/libGLES_android.so \
+    device/hp/tenderloin/prebuilt/egl/libGLESv1_CM_adreno200.so:system/lib/egl/libGLESv1_CM_adreno200.so \
+    device/hp/tenderloin/prebuilt/egl/libGLESv2_adreno200.so:system/lib/egl/libGLESv2_adreno200.so \
+    device/hp/tenderloin/prebuilt/egl/libGLESv2S3D_adreno200.so:system/lib/egl/libGLESv2S3D_adreno200.so \
+    device/hp/tenderloin/prebuilt/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so \
+
 # Wifi Modules
 PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/wifi/ath6kl.ko:system/lib/modules/ath6kl.ko \
@@ -241,8 +253,8 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/wifi/ath6k/AR6003/hw2.1.1/bdata.SD32.bin:/system/etc/firmware/ath6k/AR6003/hw2.1.1/bdata.bin
 
 # jcsullins kernel image
-PRODUCT_COPY_FILES += \
-    device/hp/tenderloin/prebuilt/boot.img:out/target/product/tenderloin/boot.img \
+#PRODUCT_COPY_FILES += \
+#    device/hp/tenderloin/prebuilt/boot.img:out/target/product/tenderloin/boot.img \
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
