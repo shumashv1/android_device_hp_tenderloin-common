@@ -129,7 +129,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/audio/lib/libaudio.so:obj/lib/libaudio.so \
     device/hp/tenderloin/prebuilt/audio/lib/libaudiopolicy.so:obj/lib/libaudiopolicy.so \
-	device/hp/tenderloin/prebuilt/audio/lib/liba2dp.so:obj/lib/liba2dp.so
+    device/hp/tenderloin/prebuilt/audio/lib/liba2dp.so:obj/lib/liba2dp.so
 
 # Prebuilt alsa configs
 PRODUCT_COPY_FILES += \
