@@ -3,8 +3,7 @@
    "repository": "hp-kernel-tenderloin",
    "target_path": "kernel/hp/tenderloin",
    "branch": "ics"
- }
-
+ },
  {    
    "account": "TheMuppets",
    "repository": "proprietary_vendor_hp",
