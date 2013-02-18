@@ -36,4 +36,5 @@ net.bt.name=Android
 
 persist.service.adb.enable=1
 persist.sys.usb.config= mass_storage,adb
+persist.sys.usb.config=mtp
 
