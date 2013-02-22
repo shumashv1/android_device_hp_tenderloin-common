@@ -1,7 +1,7 @@
 # inherit from the proprietary version
 -include vendor/hp/tenderloin/BoardConfigVendor.mk
 
-TARGET_SPECIFIC_HEADER_PATH := device/hp/tenderloin/include
+TARGET_SPECIFIC_HEADER_PATH := device/hp/tenderloin/include 
 
 # We have so much memory 3:1 split is detrimental to us.
 TARGET_USES_2G_VM_SPLIT := true
@@ -16,13 +16,12 @@ BOARD_USES_ADRENO_200 := true
 
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
-TARGET_ARCH= arm
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_SMP := true
+TARGET_ARCH := arm
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
 
-TARGET_DISABLE_ARM_PIE := true
 TARGET_NO_RADIOIMAGE := true
 TARGET_HAVE_TSLIB := false
 TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
@@ -39,12 +38,12 @@ TARGET_SCREEN_HEIGHT := 768
 TARGET_SCREEN_WIDTH := 1024
 
 # Wifi related defines
-BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_WPA_SUPPLICANT_DRIVER      := NL80211
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_ath6kl
-WPA_SUPPLICANT_VERSION      := VER_0_8_X
-BOARD_WLAN_DEVICE           := ath6kl
-WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/ath6kl.ko"
-WIFI_DRIVER_MODULE_NAME     := "ath6kl"
+WPA_SUPPLICANT_VERSION           := VER_0_8_X
+BOARD_WLAN_DEVICE                := ath6kl
+WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/ath6kl.ko"
+WIFI_DRIVER_MODULE_NAME          := "ath6kl"
 
 # Audio
 BOARD_USES_AUDIO_LEGACY := false
@@ -63,13 +62,13 @@ USE_OPENGL_RENDERER := true
 
 # QCOM HAL
 BOARD_USES_QCOM_HARDWARE := true
-TARGET_NO_HW_VSYNC := true
 TARGET_USES_OVERLAY := false
 TARGET_HAVE_BYPASS  := false
 TARGET_USES_SF_BYPASS := false
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_GENLOCK := true
 BOARD_ADRENO_DECIDE_TEXTURE_TARGET := true
+TARGET_NO_HW_VSYNC := true
 
 # Webkit workaround
 TARGET_FORCE_CPU_UPLOAD := true
@@ -83,15 +82,23 @@ BOARD_USE_QCOM_PMEM := true
 BOARD_CAMERA_USE_GETBUFFERINFO := true
 BOARD_FIRST_CAMERA_FRONT_FACING := true
 BOARD_CAMERA_USE_ENCODEDATA := true
-BOARD_NEEDS_MEMORYHEAPPMEM := true
+
+# QCOM hardware
+BOARD_USES_QCOM_HARDWARE := true
+BOARD_USES_LEGACY_QCOM := true
+BOARD_USES_QCOM_GPS := true
+BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
+TARGET_USES_OVERLAY := true
 
 BOARD_OVERLAY_FORMAT_YCbCr_420_SP := true
-USE_CAMERA_STUB := false
+USE_CAMERA_STUB := true
 
 # tenderloin- these kernel settings are temporary to complete build
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom
 BOARD_KERNEL_BASE := 0x40200000
 BOARD_PAGE_SIZE := 2048
+
+TARGET_USE_SCORPION_BIONIC_OPTIMIZATION := true
 
 BOARD_NEEDS_CUTILS_LOG := true
 
@@ -105,18 +112,27 @@ BOARD_USES_UBOOT_MULTIIMAGE := true
 # use dosfsck from dosfstools
 BOARD_USES_CUSTOM_FSCK_MSDOS := true
 
-# kernel has no ext4_lazyinit
-# (esp. important for make_ext4fs in recovery)
-BOARD_NO_EXT4_LAZYINIT := true
-
 # Define kernel config for inline building
 TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
 
+
 # Define Prebuilt kernel locations
 TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
-BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/hp/tenderloin/recovery/recovery_ui.c
+
+# kernel
+BUILD_KERNEL := true
+TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
+EXTRA_MODULES:
+	cd external/compat-wireless-3.5-rc3-1-sn; ./scripts/driver-select ath6kl
+	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/compat-wireless-3.5-rc3-1-sn KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/compat-wireless-3.5-rc3-1-sn KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE) install-modules
+	cp `find $(KERNEL_OUT)/$(TARGET_KERNEL_SOURCE) -name *.ko` $(KERNEL_MODULES_OUT)/
+	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
+	cd external/compat-wireless-3.5-rc3-1-sn; ./scripts/driver-select restore
+
+TARGET_KERNEL_MODULES := EXTRA_MODULES
+
 TARGET_RECOVERY_INITRC := device/hp/tenderloin/recovery/init.rc
-BOARD_HAS_NO_SELECT_BUTTON := false
 
 # tenderloin - these partition sizes are temporary to complete build
 TARGET_USERIMAGES_USE_EXT4 := true
