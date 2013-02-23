@@ -33,11 +33,8 @@
 #include "lsm303dlh_mag.h"
 #include "LightSensor.h"
 
-<<<<<<< HEAD
-=======
 #include "MPLSensor.h"
 
->>>>>>> fe3cc56... Add Gyroscope sensor userspace driver
 /*****************************************************************************/
 
 struct sensors_poll_context_t {
