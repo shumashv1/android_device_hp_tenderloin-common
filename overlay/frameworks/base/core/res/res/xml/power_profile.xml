@@ -11,15 +11,8 @@
     <item name="wifi.scan">220</item>
     <item name="dsp.audio">180</item>
     <item name="dsp.video">180</item>
-    <item name="radio.active">150</item>
-    <item name="radio.scanning">70</item>
-    <item name="gps.on">70</item>
     <item name="battery.capacity">6000</item>
-    <array name="radio.on">
-        <value>3</value>
-        <value>3</value>
-    </array>
-   <array name="cpu.speeds">
+    <array name="cpu.speeds">
         <value>192000</value>
         <value>384000</value>
         <value>432000</value>
