@@ -46,7 +46,7 @@ WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/ath6kl.ko"
 WIFI_DRIVER_MODULE_NAME     := "ath6kl"
 
 # Audio
-BOARD_USES_AUDIO_LEGACY := true
+BOARD_USES_AUDIO_LEGACY := false
 BOARD_USES_GENERIC_AUDIO := false
 TARGET_PROVIDES_LIBAUDIO := false
 BOARD_USES_ALSA_AUDIO := false
