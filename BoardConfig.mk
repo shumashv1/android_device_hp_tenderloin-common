@@ -16,6 +16,7 @@ BOARD_USES_ADRENO_200 := true
 
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
+TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_SMP := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
@@ -43,7 +44,7 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_ath6kl
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
 BOARD_WLAN_DEVICE           := ath6kl
 WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/ath6kl.ko"
-WIFI_DRIVER_MODULE_NAME     := "ath6kl"
+WIFI_DRIVER_MODULE_NAME     := "ath6k1"
 
 # Audio
 BOARD_USES_AUDIO_LEGACY := false
@@ -76,6 +77,12 @@ TARGET_FORCE_CPU_UPLOAD := true
 # Enable WEBGL in WebKit
 ENABLE_WEBGL := true
 
+# QCOM hardware
+BOARD_USES_QCOM_HARDWARE := true
+BOARD_USES_LEGACY_QCOM := true
+BOARD_USES_QCOM_GPS := true
+BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
+TARGET_USES_OVERLAY := true
 BOARD_USES_QCOM_LIBS := true
 BOARD_USES_QCOM_LIBRPC := true
 BOARD_USE_QCOM_PMEM := true
@@ -113,7 +120,20 @@ TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
 
 # Define Prebuilt kernel locations
 TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
-BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/hp/tenderloin/recovery/recovery_ui.c
+
+# kernel
+BUILD_KERNEL := true
+TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
+EXTRA_MODULES:
+	cd external/compat-wireless-3.5-rc3-1-sn; ./scripts/driver-select ath6kl
+	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/compat-wireless-3.5-rc3-1-sn KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/compat-wireless-3.5-rc3-1-sn KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE) install-modules
+	cp `find $(KERNEL_OUT)/$(TARGET_KERNEL_SOURCE) -name *.ko` $(KERNEL_MODULES_OUT)/
+	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
+	cd external/compat-wireless-3.5-rc3-1-sn; ./scripts/driver-select restore
+
+TARGET_KERNEL_MODULES := EXTRA_MODULES
+
 TARGET_RECOVERY_INITRC := device/hp/tenderloin/recovery/init.rc
 BOARD_HAS_NO_SELECT_BUTTON := false
 
