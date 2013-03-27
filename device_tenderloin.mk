@@ -105,7 +105,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
     libaudioutils \
-    audio.primary.tenderloin \
+
+#Commented out to allow booting (temp)
+#audio.primary.tenderloin \
 
 # Prebuilt audio libs
 PRODUCT_COPY_FILES += \
