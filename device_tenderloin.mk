@@ -23,7 +23,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_CHARACTERISTICS := tablet
 
-PRODUCT_AAPT_CONFIG := xlarge mdpi
+PRODUCT_AAPT_CONFIG := xlarge mdpi hdpi
 
 PRODUCT_PACKAGES += \
 	make_ext4fs
@@ -86,9 +86,7 @@ PRODUCT_PACKAGES += \
 	libOmxCore \
 	libmm-omxcore \
 	libdivxdrmdecrypt \
-	libOmxVdec \
-	libOmxAacEnc \
-	libOmxAmrEnc
+	libOmxVdec
 
 # QCOM OMX Video Encoding
 PRODUCT_PACKAGES += \
@@ -104,57 +102,22 @@ PRODUCT_PACKAGES += \
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
-    libaudioutils \
-#Comment out to temporarily to finish build
-#    audio.primary.tenderloin \
+    audio.primary.tenderloin \
+	tinymix \
+	tinyplay \
+	tinycap
 
-# Prebuilt audio libs
+# audio mixer paths
 PRODUCT_COPY_FILES += \
-    device/hp/tenderloin/prebuilt/etc/audio_policy.conf:system/etc/audio_policy.conf \
-    device/hp/tenderloin/prebuilt/audio/lib/liba2dp.so:system/lib/liba2dp.so \
-    device/hp/tenderloin/prebuilt/audio/lib/libtinyalsa.so:system/lib/libtinyalsa.so \
-    device/hp/tenderloin/prebuilt/audio/lib/libbinder.so:system/lib/libbinder.so \
-    device/hp/tenderloin/prebuilt/audio/lib/libjpeg.so:system/lib/libjpeg.so \
-    device/hp/tenderloin/prebuilt/audio/lib/libwebcore.so:system/lib/libwebcore.so \
-    device/hp/tenderloin/prebuilt/audio/lib/libjackpal-androidterm4.so:system/lib/liblibjackpal-androidterm4.so \
-    device/hp/tenderloin/prebuilt/audio/lib/libasound.so:system/lib/libasound.so \
-    device/hp/tenderloin/prebuilt/audio/lib/libaudiopolicy.so:system/lib/libaudiopolicy.so \
-    device/hp/tenderloin/prebuilt/audio/lib/libaudio.so:system/lib/libaudio.so \
-    device/hp/tenderloin/prebuilt/etc/mixer_paths.xml:system/etc/mixer_paths.xml \
-    device/hp/tenderloin/prebuilt/etc/NOTICE.html.gz:system/etc/NOTICE.html.gz \
-    device/hp/tenderloin/prebuilt/audio/lib/hw/alsa.tenderloin.so:system/lib/hw/alsa.tenderloin.so \
-    device/hp/tenderloin/prebuilt/audio/lib/hw/audio.primary.tenderloin.so:system/lib/hw/audio.primary.tenderloin.so \
+    device/hp/tenderloin/configs/mixer_paths.xml:system/etc/mixer_paths.xml
 
-# Prebuilt audio libs needed to compile other libs
+# audio policy configuration
 PRODUCT_COPY_FILES += \
-    device/hp/tenderloin/prebuilt/audio/lib/libaudio.so:obj/lib/libaudio.so \
-    device/hp/tenderloin/prebuilt/audio/lib/libaudiopolicy.so:obj/lib/libaudiopolicy.so \
-    device/hp/tenderloin/prebuilt/audio/lib/liba2dp.so:obj/lib/liba2dp.so
-
-# Prebuilt alsa configs
-PRODUCT_COPY_FILES += \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/dsnoop.conf:system/usr/share/alsa/pcm/dsnoop.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/dmix.conf:system/usr/share/alsa/pcm/dmix.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/dpl.conf:system/usr/share/alsa/pcm/dpl.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/modem.conf:system/usr/share/alsa/pcm/modem.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/surround40.conf:system/usr/share/alsa/pcm/surround40.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/iec958.conf:system/usr/share/alsa/pcm/iec958.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/center_lfe.conf:system/usr/share/alsa/pcm/center_lfe.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/default.conf:system/usr/share/alsa/pcm/default.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/surround50.conf:system/usr/share/alsa/pcm/surround50.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/rear.conf:system/usr/share/alsa/pcm/rear.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/surround41.conf:system/usr/share/alsa/pcm/surround41.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/side.conf:system/usr/share/alsa/pcm/side.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/surround51.conf:system/usr/share/alsa/pcm/surround51.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/front.conf:system/usr/share/alsa/pcm/front.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/pcm/surround71.conf:system/usr/share/alsa/pcm/surround71.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/alsa.conf:system/usr/share/alsa/alsa.conf \
-	device/hp/tenderloin/prebuilt/audio/usr/share/alsa/cards/aliases.conf:system/usr/share/alsa/cards/aliases.conf
+    device/hp/tenderloin/configs/audio_policy.conf:system/etc/audio_policy.conf
 
 # Camera
-#Comment out temporarily to finish build
-#PRODUCT_PACKAGES += \
-#    camera.msm8660
+PRODUCT_PACKAGES += \
+    camera.msm8660
 
 # Sensors, misc
 PRODUCT_PACKAGES += \
@@ -191,14 +154,9 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/modules/cifs.ko:system/lib/modules/cifs.ko \
     device/hp/tenderloin/prebuilt/modules/ntfs.ko:system/lib/modules/ntfs.ko \
     device/hp/tenderloin/prebuilt/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
-    device/hp/tenderloin/prebuilt/modules/tun.ko:system/lib/modules/tun.ko \
-    device/hp/tenderloin/prebuilt/modules/lcd.ko:system/lib/modules/lcd.ko \
-    device/hp/tenderloin/prebuilt/modules/oprofile.ko:system/lib/modules/oprofile.ko \
-    device/hp/tenderloin/prebuilt/modules/sunrpc.ko:system/lib/modules/sunrpc.ko \
-    device/hp/tenderloin/prebuilt/modules/nfs.ko:system/lib/modules/nfs.ko \
-    device/hp/tenderloin/prebuilt/modules/lockd.ko:system/lib/modules/lockd.ko \
+    device/hp/tenderloin/prebuilt/modules/tun.ko:system/lib/modules/tun.ko
 
-# egl Modules
+# Adreno egl Modules
 PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/egl/egl.cfg:system/lib/egl/egl.cfg \
     device/hp/tenderloin/prebuilt/egl/eglsubAndroid.so:system/lib/egl/eglsubAndroid.so \
@@ -207,7 +165,15 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/egl/libGLESv1_CM_adreno200.so:system/lib/egl/libGLESv1_CM_adreno200.so \
     device/hp/tenderloin/prebuilt/egl/libGLESv2_adreno200.so:system/lib/egl/libGLESv2_adreno200.so \
     device/hp/tenderloin/prebuilt/egl/libGLESv2S3D_adreno200.so:system/lib/egl/libGLESv2S3D_adreno200.so \
-    device/hp/tenderloin/prebuilt/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so \
+    device/hp/tenderloin/prebuilt/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so
+
+# Adreno libs
+PRODUCT_COPY_FILES += \
+    device/hp/tenderloin/prebuilt/lib/libc2d2_z180.so:system/lib/libc2d2_z180.so \
+    device/hp/tenderloin/prebuilt/lib/libC2D2.so:system/lib/libC2D2.so \
+    device/hp/tenderloin/prebuilt/lib/libgsl.so:system/lib/libgsl.so \
+    device/hp/tenderloin/prebuilt/lib/libOpenVG.so:system/lib/libOpenVG.so \
+    device/hp/tenderloin/prebuilt/lib/llibsc-a2xx.so:system/lib/libsc-a2xx.so \
 
 # Wifi Modules
 PRODUCT_COPY_FILES += \
@@ -216,7 +182,7 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/wifi/cfg80211.ko:system/lib/modules/cfg80211.ko \
     device/hp/tenderloin/prebuilt/wifi/mac80211.ko:system/lib/modules/mac80211.ko \
     device/hp/tenderloin/prebuilt/wifi/compat.ko:system/lib/modules/compat.ko \
-    device/hp/tenderloin/prebuilt/wifi/sch_codel.ko:system/lib/modules/sch_codel.ko \
+    device/hp/tenderloin/prebuilt/wifi/sch_codel.ko:system/lib/modules/sch_codel.ko
     device/hp/tenderloin/prebuilt/wifi/sch_fq_codel.ko:system/lib/modules/sch_fw_codel.ko
 
 #Wifi Firmware
@@ -254,10 +220,6 @@ PRODUCT_COPY_FILES += \
 # Wifi Firmware (hack for selecting proper bdata.bin)
 PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/wifi/ath6k/AR6003/hw2.1.1/bdata.SD32.bin:/system/etc/firmware/ath6k/AR6003/hw2.1.1/bdata.bin
-
-# jcsullins kernel image
-#PRODUCT_COPY_FILES += \
-#    device/hp/tenderloin/prebuilt/boot.img:out/target/product/tenderloin/boot.img \
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise

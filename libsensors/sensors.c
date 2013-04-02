@@ -47,7 +47,7 @@ static const struct sensor_t sSensorList[] = {
                 "Invensense",
                 1, SENSORS_HANDLE_BASE+ID_GY,
                 SENSOR_TYPE_GYROSCOPE, 2000.0f*RAD_P_DEG, 32.8f*RAD_P_DEG, 0.5f, 10000/*10ms*/, { } },
-        { "BMA150 Temperature sensor",
+        { "MPL Temperature sensor",
                 "Invensense",
                 1, SENSORS_HANDLE_BASE+ID_T,
                 SENSOR_TYPE_AMBIENT_TEMPERATURE, 80.0f, 0.5f, 0.0f, 10000/*10ms*/, {} },
