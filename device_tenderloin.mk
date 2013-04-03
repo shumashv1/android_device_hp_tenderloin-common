@@ -157,7 +157,7 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/modules/tun.ko:system/lib/modules/tun.ko
 
 # Adreno egl Modules
-PRODUCT_COPY_FILES += \
+#PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/egl/egl.cfg:system/lib/egl/egl.cfg \
     device/hp/tenderloin/prebuilt/egl/eglsubAndroid.so:system/lib/egl/eglsubAndroid.so \
     device/hp/tenderloin/prebuilt/egl/libEGL_adreno200.so:system/lib/egl/libEGL_adreno200.so \
@@ -168,7 +168,7 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so
 
 # Adreno libs
-PRODUCT_COPY_FILES += \
+#PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/lib/libc2d2_z180.so:system/lib/libc2d2_z180.so \
     device/hp/tenderloin/prebuilt/lib/libC2D2.so:system/lib/libC2D2.so \
     device/hp/tenderloin/prebuilt/lib/libgsl.so:system/lib/libgsl.so \
