@@ -158,22 +158,22 @@ PRODUCT_COPY_FILES += \
 
 # Adreno egl Modules
 #PRODUCT_COPY_FILES += \
-    device/hp/tenderloin/prebuilt/egl/egl.cfg:system/lib/egl/egl.cfg \
-    device/hp/tenderloin/prebuilt/egl/eglsubAndroid.so:system/lib/egl/eglsubAndroid.so \
-    device/hp/tenderloin/prebuilt/egl/libEGL_adreno200.so:system/lib/egl/libEGL_adreno200.so \
-    device/hp/tenderloin/prebuilt/egl/libGLES_android.so:system/lib/egl/libGLES_android.so \
-    device/hp/tenderloin/prebuilt/egl/libGLESv1_CM_adreno200.so:system/lib/egl/libGLESv1_CM_adreno200.so \
-    device/hp/tenderloin/prebuilt/egl/libGLESv2_adreno200.so:system/lib/egl/libGLESv2_adreno200.so \
-    device/hp/tenderloin/prebuilt/egl/libGLESv2S3D_adreno200.so:system/lib/egl/libGLESv2S3D_adreno200.so \
-    device/hp/tenderloin/prebuilt/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so
+#    device/hp/tenderloin/prebuilt/egl/egl.cfg:system/lib/egl/egl.cfg \
+#    device/hp/tenderloin/prebuilt/egl/eglsubAndroid.so:system/lib/egl/eglsubAndroid.so \
+#    device/hp/tenderloin/prebuilt/egl/libEGL_adreno200.so:system/lib/egl/libEGL_adreno200.so \
+#    device/hp/tenderloin/prebuilt/egl/libGLES_android.so:system/lib/egl/libGLES_android.so \
+#    device/hp/tenderloin/prebuilt/egl/libGLESv1_CM_adreno200.so:system/lib/egl/libGLESv1_CM_adreno200.so \
+#    device/hp/tenderloin/prebuilt/egl/libGLESv2_adreno200.so:system/lib/egl/libGLESv2_adreno200.so \
+#    device/hp/tenderloin/prebuilt/egl/libGLESv2S3D_adreno200.so:system/lib/egl/libGLESv2S3D_adreno200.so \
+#    device/hp/tenderloin/prebuilt/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so
 
 # Adreno libs
 #PRODUCT_COPY_FILES += \
-    device/hp/tenderloin/prebuilt/lib/libc2d2_z180.so:system/lib/libc2d2_z180.so \
-    device/hp/tenderloin/prebuilt/lib/libC2D2.so:system/lib/libC2D2.so \
-    device/hp/tenderloin/prebuilt/lib/libgsl.so:system/lib/libgsl.so \
-    device/hp/tenderloin/prebuilt/lib/libOpenVG.so:system/lib/libOpenVG.so \
-    device/hp/tenderloin/prebuilt/lib/llibsc-a2xx.so:system/lib/libsc-a2xx.so \
+#    device/hp/tenderloin/prebuilt/lib/libc2d2_z180.so:system/lib/libc2d2_z180.so \
+#    device/hp/tenderloin/prebuilt/lib/libC2D2.so:system/lib/libC2D2.so \
+#    device/hp/tenderloin/prebuilt/lib/libgsl.so:system/lib/libgsl.so \
+#    device/hp/tenderloin/prebuilt/lib/libOpenVG.so:system/lib/libOpenVG.so \
+#    device/hp/tenderloin/prebuilt/lib/llibsc-a2xx.so:system/lib/libsc-a2xx.so \
 
 # Wifi Modules
 PRODUCT_COPY_FILES += \
