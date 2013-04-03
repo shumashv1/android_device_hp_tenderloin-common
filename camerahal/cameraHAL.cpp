@@ -104,27 +104,6 @@ typedef struct priv_camera_device {
     int rotation;
 } priv_camera_device_t;
 
-static int read_mode_from_config(const char *entry)
-{
-    int mode = 0;
-    FILE *fp = fopen("/data/misc/camera/config.txt", "r");
-    if (fp)
-    {
-        char buff[80], *tmp;
-        while (fgets(buff, sizeof(buff), fp) != NULL)
-        {
-            if ((tmp = strstr(buff, entry)) != NULL)
-            {
-                tmp += strlen(entry)+1;
-                mode = atoi(tmp);
-                break;
-            }
-        }
-        fclose(fp);
-    }
-    ALOGI("Returning param %s mode %d\n", entry, mode);
-    return mode;
-}
 
 static struct {
     int type;
@@ -155,6 +134,25 @@ static void dump_msg(const char *tag, int msg_type)
         }
     }
 #endif
+}
+
+static int read_mode_from_config(const char *entry)
+{
+    int mode = 0;
+    FILE *fp = fopen("/data/misc/camera/config.txt", "r");
+    if (fp) {
+        char buff[80], *tmp;
+        while (fgets(buff, sizeof(buff), fp) != NULL) {
+            if ((tmp = strstr(buff, entry)) != NULL) {
+                tmp += strlen(entry) + 1;
+                mode = atoi(tmp);
+                break;
+            }
+        }
+        fclose(fp);
+    }
+    ALOGI("Returning param %s mode %d\n", entry, mode);
+    return mode;
 }
 
 /*******************************************************************
@@ -250,12 +248,9 @@ static void wrap_queue_buffer_hook(void *data, void* buffer)
 #ifdef ANDROID_ICS
         memcpy(vaddr, frame, width * height * 3 / 2);
 #else
-        if (dev->preview_mode != 0)
-        {
+        if (dev->preview_mode != 0) {
             memcpy(vaddr, frame, width * height * 3 / 2);
-        }
-        else
-        {
+        } else {
             /*
              * The YUV420 Semi-Planar frame is constructed as follows:
              *
@@ -989,8 +984,9 @@ char* camera_get_parameters(struct camera_device * device)
 
     CameraHAL_FixupParams(camParams);
 
-    if (dev->rotation != 0)
+    if (dev->rotation != 0) {
         camParams.set("rotation", dev->rotation);
+    }
 
     params_str8 = camParams.flatten();
     params = (char*) malloc(sizeof(char) * (params_str8.length()+1));
@@ -1260,8 +1256,9 @@ int camera_get_camera_info(int camera_id, struct camera_info *info)
     info->facing = cameraInfo.facing;
     info->orientation = cameraInfo.orientation;
 
-	if (read_mode_from_config("preview_mode") == 2)
-		info->facing = CAMERA_FACING_BACK;
+    if (read_mode_from_config("preview_mode") == 2) {
+        info->facing = CAMERA_FACING_BACK;
+    }
 
     ALOGI("%s: id:%i faceing:%i orientation: %i", __FUNCTION__,camera_id, info->facing, info->orientation);
     return rv;
