@@ -16,13 +16,12 @@ BOARD_USES_ADRENO_200 := true
 
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
-TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_SMP := true
+TARGET_ARCH := arm
 ARCH_ARM_HAVE_TLS_REGISTER := true
-
-
 TARGET_DISABLE_ARM_PIE := true
+
 TARGET_NO_RADIOIMAGE := true
 TARGET_HAVE_TSLIB := false
 TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
@@ -32,7 +31,7 @@ TARGET_USE_SCORPION_PLD_SET := true
 TARGET_SCORPION_BIONIC_PLDOFFS := 6
 TARGET_SCORPION_BIONIC_PLDSIZE := 128
 
-COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=59 -DQCOM_HARDWARE
+COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=59 -DQCOM_HARDWARE -DHWC_REMOVE_DEPRECATED_VERSIONS=0
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 768
@@ -44,7 +43,7 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_ath6kl
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
 BOARD_WLAN_DEVICE           := ath6kl
 WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/ath6kl.ko"
-WIFI_DRIVER_MODULE_NAME     := "ath6k1"
+WIFI_DRIVER_MODULE_NAME     := "ath6kl"
 
 # Audio
 BOARD_USES_AUDIO_LEGACY := false
@@ -59,6 +58,8 @@ BOARD_HAVE_BLUETOOTH_CSR := true
 
 # Define egl.cfg location
 BOARD_EGL_CFG := device/hp/tenderloin/egl.cfg
+BOARD_EGL_NEEDS_LEGACY_FB := true
+TARGET_QCOM_DISPLAY_VARIANT := legacy
 USE_OPENGL_RENDERER := true
 
 # QCOM HAL
@@ -70,6 +71,7 @@ TARGET_USES_SF_BYPASS := false
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_GENLOCK := true
 BOARD_ADRENO_DECIDE_TEXTURE_TARGET := true
+TARGET_NO_HW_VSYNC := true
 
 # Webkit workaround
 TARGET_FORCE_CPU_UPLOAD := true
@@ -77,12 +79,6 @@ TARGET_FORCE_CPU_UPLOAD := true
 # Enable WEBGL in WebKit
 ENABLE_WEBGL := true
 
-# QCOM hardware
-BOARD_USES_QCOM_HARDWARE := true
-BOARD_USES_LEGACY_QCOM := true
-BOARD_USES_QCOM_GPS := true
-BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
-TARGET_USES_OVERLAY := true
 BOARD_USES_QCOM_LIBS := true
 BOARD_USES_QCOM_LIBRPC := true
 BOARD_USE_QCOM_PMEM := true
@@ -98,6 +94,8 @@ USE_CAMERA_STUB := false
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom
 BOARD_KERNEL_BASE := 0x40200000
 BOARD_PAGE_SIZE := 2048
+
+TARGET_USE_SCORPION_BIONIC_OPTIMIZATION := true
 
 BOARD_NEEDS_CUTILS_LOG := true
 
@@ -118,22 +116,10 @@ BOARD_NO_EXT4_LAZYINIT := true
 # Define kernel config for inline building
 TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
 
+
 # Define Prebuilt kernel locations
 TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
-
-# kernel
-BUILD_KERNEL := true
-TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
-EXTRA_MODULES:
-	cd external/compat-wireless-3.5-rc3-1-sn; ./scripts/driver-select ath6kl
-	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/compat-wireless-3.5-rc3-1-sn KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
-	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/compat-wireless-3.5-rc3-1-sn KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE) install-modules
-	cp `find $(KERNEL_OUT)/$(TARGET_KERNEL_SOURCE) -name *.ko` $(KERNEL_MODULES_OUT)/
-	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
-	cd external/compat-wireless-3.5-rc3-1-sn; ./scripts/driver-select restore
-
-TARGET_KERNEL_MODULES := EXTRA_MODULES
-
+BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/hp/tenderloin/recovery/recovery_ui.c
 TARGET_RECOVERY_INITRC := device/hp/tenderloin/recovery/init.rc
 BOARD_HAS_NO_SELECT_BUTTON := false
 

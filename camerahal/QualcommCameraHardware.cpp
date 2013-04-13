@@ -676,11 +676,6 @@ static const str_map skinToneEnhancement[] = {
     { CameraParameters::SKIN_TONE_ENHANCEMENT_DISABLE, FALSE }
 };
 
-static const str_map continuous_af[] = {
-    { CameraParameters::CONTINUOUS_AF_OFF, FALSE },
-    { CameraParameters::CONTINUOUS_AF_ON, TRUE }
-};
-
 static const str_map selectable_zone_af[] = {
     { CameraParameters::SELECTABLE_ZONE_AF_AUTO,  AUTO },
     { CameraParameters::SELECTABLE_ZONE_AF_SPOT_METERING, SPOT },
@@ -746,7 +741,6 @@ static String8 skinToneEnhancement_values;
 static String8 touchafaec_values;
 static String8 picture_format_values;
 static String8 scenemode_values;
-static String8 continuous_af_values;
 static String8 zoom_ratio_values;
 static String8 preview_frame_rate_values;
 static String8 frame_rate_mode_values;
@@ -1292,11 +1286,6 @@ void QualcommCameraHardware::initDefaultParameters()
         picture_format_values = create_values_str(
             picture_formats, sizeof(picture_formats)/sizeof(str_map));
 
-        if(mHasAutoFocusSupport){
-            continuous_af_values = create_values_str(
-                continuous_af, sizeof(continuous_af) / sizeof(str_map));
-        }
-
         if (mCfgControl.mm_camera_query_parms(CAMERA_PARM_ZOOM_RATIO, (void **)&zoomRatios, (uint32_t *) &mMaxZoom) == MM_CAMERA_SUCCESS)
         {
             zoomSupported = true;
@@ -1520,10 +1509,6 @@ void QualcommCameraHardware::initDefaultParameters()
 
     mParameters.set(CameraParameters::KEY_SUPPORTED_SCENE_MODES,
                     scenemode_values);
-    mParameters.set(CameraParameters::KEY_CONTINUOUS_AF,
-                    CameraParameters::CONTINUOUS_AF_OFF);
-    mParameters.set(CameraParameters::KEY_SUPPORTED_CONTINUOUS_AF,
-                    continuous_af_values);
     mParameters.set(CameraParameters::KEY_TOUCH_AF_AEC,
                     CameraParameters::TOUCH_AF_AEC_OFF);
     mParameters.set(CameraParameters::KEY_SUPPORTED_TOUCH_AF_AEC,
@@ -3689,7 +3674,6 @@ status_t QualcommCameraHardware::setParameters(const CameraParameters& params)
     if ((rc = setPictureFormat(params))) final_rc = rc;
     if ((rc = setSharpness(params)))    final_rc = rc;
     if ((rc = setSaturation(params)))   final_rc = rc;
-    if ((rc = setContinuousAf(params)))  final_rc = rc;
     if ((rc = setSelectableZoneAf(params)))   final_rc = rc;
     if ((rc = setTouchAfAec(params)))   final_rc = rc;
     if ((rc = setSceneMode(params)))    final_rc = rc;
@@ -3727,72 +3711,6 @@ CameraParameters QualcommCameraHardware::getParameters() const
 {
     ALOGV("getParameters: EX");
     return mParameters;
-}
-
-status_t QualcommCameraHardware::setHistogramOn()
-{
-    ALOGV("setHistogramOn: EX");
-
-    mStatsWaitLock.lock();
-    mSendData = true;
-    if(mStatsOn == CAMERA_HISTOGRAM_ENABLE) {
-        mStatsWaitLock.unlock();
-        return NO_ERROR;
-     }
-
-    if (mStatHeap != NULL) {
-        ALOGV("setHistogram on: clearing old mStatHeap.");
-        mStatHeap.clear();
-    }
-
-    mStatSize = sizeof(uint32_t)* HISTOGRAM_STATS_SIZE;
-    mCurrent = -1;
-    /*Currently the Ashmem is multiplying the buffer size with total number
-    of buffers and page aligning. This causes a crash in JNI as each buffer
-    individually expected to be page aligned  */
-    int page_size_minus_1 = getpagesize() - 1;
-    int32_t mAlignedStatSize = ((mStatSize + page_size_minus_1) & (~page_size_minus_1));
-
-    mStatHeap =
-            new AshmemPool(mAlignedStatSize,
-                           3,
-                           mStatSize,
-                           "stat");
-      if (!mStatHeap->initialized()) {
-          ALOGE("Stat Heap X failed ");
-          mStatHeap.clear();
-          mStatHeap = NULL;
-          ALOGE("setHistogramOn X: error initializing mStatHeap");
-          mStatsWaitLock.unlock();
-          return UNKNOWN_ERROR;
-      }
-    mStatsOn = CAMERA_HISTOGRAM_ENABLE;
-
-    mStatsWaitLock.unlock();
-    mCfgControl.mm_camera_set_parm(CAMERA_PARM_HISTOGRAM, &mStatsOn);
-    return NO_ERROR;
-
-}
-
-status_t QualcommCameraHardware::setHistogramOff()
-{
-    ALOGV("setHistogramOff: EX");
-    mStatsWaitLock.lock();
-    if(mStatsOn == CAMERA_HISTOGRAM_DISABLE) {
-    mStatsWaitLock.unlock();
-        return NO_ERROR;
-     }
-    mStatsOn = CAMERA_HISTOGRAM_DISABLE;
-    mStatsWaitLock.unlock();
-
-    mCfgControl.mm_camera_set_parm(CAMERA_PARM_HISTOGRAM, &mStatsOn);
-
-    mStatsWaitLock.lock();
-    mStatHeap.clear();
-    mStatHeap = NULL;
-    mStatsWaitLock.unlock();
-
-    return NO_ERROR;
 }
 
 status_t QualcommCameraHardware::runFaceDetection()
@@ -3859,18 +3777,6 @@ status_t QualcommCameraHardware::sendCommand(int32_t command, int32_t arg1,
                                    }
                                    setFaceDetection("off");
                                    return runFaceDetection();
-      case CAMERA_CMD_HISTOGRAM_ON:
-                                   ALOGV("histogram set to on");
-                                   return setHistogramOn();
-      case CAMERA_CMD_HISTOGRAM_OFF:
-                                   ALOGV("histogram set to off");
-                                   return setHistogramOff();
-      case CAMERA_CMD_HISTOGRAM_SEND_DATA:
-                                   mStatsWaitLock.lock();
-                                   if(mStatsOn == CAMERA_HISTOGRAM_ENABLE)
-                                       mSendData = true;
-                                   mStatsWaitLock.unlock();
-                                   return NO_ERROR;
       case CAMERA_CMD_START_SMOOTH_ZOOM:
       case CAMERA_CMD_STOP_SMOOTH_ZOOM:
                                    ALOGV("Smooth zoom is not supported yet");
@@ -5620,27 +5526,6 @@ status_t QualcommCameraHardware::setLensshadeValue(const CameraParameters& param
     }
     ALOGE("Invalid lensShade value: %s", (str == NULL) ? "NULL" : str);
     return BAD_VALUE;
-}
-
-status_t QualcommCameraHardware::setContinuousAf(const CameraParameters& params)
-{
-    if(mHasAutoFocusSupport){
-        const char *str = params.get(CameraParameters::KEY_CONTINUOUS_AF);
-        if (str != NULL) {
-            int value = attr_lookup(continuous_af,
-                    sizeof(continuous_af) / sizeof(str_map), str);
-            if (value != NOT_FOUND) {
-                int8_t temp = (int8_t)value;
-                mParameters.set(CameraParameters::KEY_CONTINUOUS_AF, str);
-
-                native_set_parms(CAMERA_PARM_CONTINUOUS_AF, sizeof(int8_t), (void *)&temp);
-                return NO_ERROR;
-            }
-        }
-        ALOGE("Invalid continuous Af value: %s", (str == NULL) ? "NULL" : str);
-        return BAD_VALUE;
-    }
-    return NO_ERROR;
 }
 
 status_t QualcommCameraHardware::setSelectableZoneAf(const CameraParameters& params)
