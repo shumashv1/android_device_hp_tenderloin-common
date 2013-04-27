@@ -18,7 +18,6 @@ package com.cyanogenmod.settings.device;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -35,11 +34,13 @@ import android.util.Log;
 
 import com.cyanogenmod.settings.device.R;
 
-public class CameraFragmentActivity extends PreferenceFragment {
-
+public class CameraFragmentActivity extends PreferenceFragment implements OnPreferenceChangeListener {
     private static final String TAG = "TenderloinParts_Camera";
-    private static final String CAMERA_CONF_BIN = "/system/bin/cam_config";
+    private static final String CAMERA_CONF_FILE = "/data/misc/camera/config.txt";
     private SharedPreferences mSharedPrefs;
+
+    private ListPreference mPreviewModePref;
+    private ListPreference mRotationPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,157 +51,62 @@ public class CameraFragmentActivity extends PreferenceFragment {
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         addPreferencesFromResource(R.xml.camera_preferences);
-        setPreviewModePrefTitle(null);
-        setRotationModePrefTitle(null);
-        syncPreferences();
 
-        Preference previewModePref = findPreference("preview_mode_preference");
-        previewModePref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (setPreviewMode((String)newValue)) {
-                    setPreviewModePrefTitle((String)newValue);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-        Preference rotationModePref = findPreference("rotation_mode_preference");
-        rotationModePref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (setRotationMode((String)newValue)) {
-                    setRotationModePrefTitle((String)newValue);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
+        mPreviewModePref = (ListPreference) findPreference("preview_mode_preference");
+        mPreviewModePref.setOnPreferenceChangeListener(this);
+        mRotationPref = (ListPreference) findPreference("rotation_mode_preference");
+        mRotationPref.setOnPreferenceChangeListener(this);
+
+        updatePreviewModeSummary(mPreviewModePref.getValue());
+        updateRotationSummary(mRotationPref.getValue());
+        syncPreferences(null, null);
     }
 
-    private void setPreviewModePrefTitle(String mode) {
-        Preference previewModePref = findPreference("preview_mode_preference");
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        String previewMode = (preference == mPreviewModePref) ? (String) newValue : null;
+        String rotationMode = (preference == mRotationPref) ? (String) newValue : null;
 
-        if (mode == null) {
-            //Set title based on stored preference
-            mode = mSharedPrefs.getString("preview_mode_preference", "");
-        }
-
-        if (previewModePref != null) {
-            if (mode.equalsIgnoreCase("0")) {
-                previewModePref.setTitle(getString(R.string.preview_mode_preference_title_mirrored));
-                previewModePref.setSummary(getString(R.string.preview_mode_preference_summary_mirrored));
-            } else if (mode.equalsIgnoreCase("1")) {
-                previewModePref.setTitle(getString(R.string.preview_mode_preference_title_normal));
-                previewModePref.setSummary(getString(R.string.preview_mode_preference_summary_normal));
-            } else if (mode.equalsIgnoreCase("2")) {
-                previewModePref.setTitle(getString(R.string.preview_mode_preference_title_rear));
-                previewModePref.setSummary(getString(R.string.preview_mode_preference_summary_rear));
-            }
-        }
-    }
-
-    private void setRotationModePrefTitle(String mode) {
-        Preference rotationModePref = findPreference("rotation_mode_preference");
-
-        if (mode == null) {
-            //Set title based on stored preference
-            mode = mSharedPrefs.getString("rotation_mode_preference", "0");
-        }
-
-        if (rotationModePref != null) {
-            rotationModePref.setTitle(mode);
-            rotationModePref.setSummary(mode);
-        }
-    }
-
-    private void syncPreferences() {
-        String previewMode = getCurrentPreviewMode();
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
-        if (previewMode != null) {
-            String [] values = getResources().getStringArray(R.array.preview_mode_values);
-            if (previewMode.equals("0"))
-                editor.putString("preview_mode_preference", values[0]);
-            else if (previewMode.equals("1"))
-                editor.putString("preview_mode_preference", values[1]);
-            else if (previewMode.equals("2"))
-                editor.putString("preview_mode_preference", values[2]);
-        }
-        editor.putString("rotation_mode_preference", getCurrentRotationMode());
-        editor.commit();
-    }
-
-    private String getCurrentPreviewMode() {
-        String ret = null;
-        Process process;
-        try {
-            process = Runtime.getRuntime().exec(new String[] { "su", "-c", CAMERA_CONF_BIN + " get preview"});
-            DataInputStream is = new DataInputStream(process.getInputStream());
-            process.waitFor();
-
-            if (process.exitValue() == 0)
-                ret = is.readLine();
-            else
-                Log.e(TAG, "Unable to get preview mode");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
-
-    private boolean setPreviewMode(String mode) {
-        int ret = -1;
-        Process process;
-        try {
-            process = Runtime.getRuntime().exec(new String[] { "su", "-c", CAMERA_CONF_BIN + " set preview " + mode });
-            process.waitFor();
-            ret = process.exitValue();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (ret == 0)
-            return true;
-        else {
-            Log.e(TAG, "Unable to set preview mode, ret=" + ret);
+        if (!syncPreferences(previewMode, rotationMode)) {
             return false;
         }
+
+        if (preference == mPreviewModePref) {
+            updatePreviewModeSummary(previewMode);
+        } else if (preference == mRotationPref) {
+            updateRotationSummary(rotationMode);
+        }
+
+        return true;
     }
 
-    private String getCurrentRotationMode() {
-        String ret = null;
-        Process process;
-        try {
-            process = Runtime.getRuntime().exec(new String[] { "su", "-c", CAMERA_CONF_BIN + " get rotation"});
-            DataInputStream is = new DataInputStream(process.getInputStream());
-            process.waitFor();
+    private void updatePreviewModeSummary(String mode) {
+        int modeIndex = Integer.parseInt(mode);
+        String[] summaries = getResources().getStringArray(R.array.preview_mode_summaries);
 
-            if (process.exitValue() == 0)
-                ret = is.readLine();
-            else
-                Log.e(TAG, "Unable to get rotation");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ret;
+        mPreviewModePref.setSummary(summaries[modeIndex]);
     }
 
-    private boolean setRotationMode(String mode) {
-        int ret = -1;
-        Process process;
-        try {
-            process = Runtime.getRuntime().exec(new String[] { "su", "-c", CAMERA_CONF_BIN + " set rotation " + mode});
-            process.waitFor();
-            ret = process.exitValue();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void updateRotationSummary(String angle) {
+        mRotationPref.setSummary(angle + getString(R.string.rotation_unit));
+    }
+
+    private boolean syncPreferences(String previewMode, String rotationMode) {
+        if (previewMode == null) {
+            previewMode = mPreviewModePref.getValue();
         }
-        if (ret == 0)
-            return true;
-        else {
-            Log.e(TAG, "Unable to set rotation, ret=" + ret);
-            return false;
+        if (rotationMode == null) {
+            rotationMode = mRotationPref.getValue();
         }
+
+        StringBuilder value = new StringBuilder();
+        value.append("preview_mode=");
+        value.append(previewMode);
+        value.append("\n");
+        value.append("rotation_mode=");
+        value.append(rotationMode);
+        value.append("\n");
+
+        return Utils.writeValue(CAMERA_CONF_FILE, value.toString());
     }
 }
