@@ -1,4 +1,0 @@
-<resources>
-    <add-resource type="bool" name="config_workspaceTabletGrid"/>
-    <bool name="config_workspaceTabletGrid">true</bool>
-</resource>
