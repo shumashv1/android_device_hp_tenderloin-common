@@ -15,10 +15,10 @@ TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
 BOARD_USES_ADRENO_200 := true
 
 TARGET_CPU_ABI := armeabi-v7a
+TARGET_ARCH := arm
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_SMP := true
-TARGET_ARCH := arm
 ARCH_ARM_HAVE_TLS_REGISTER := true
 TARGET_DISABLE_ARM_PIE := true
 
@@ -71,7 +71,6 @@ TARGET_USES_SF_BYPASS := false
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_GENLOCK := true
 BOARD_ADRENO_DECIDE_TEXTURE_TARGET := true
-TARGET_NO_HW_VSYNC := true
 
 # Webkit workaround
 TARGET_FORCE_CPU_UPLOAD := true
@@ -95,8 +94,6 @@ BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom
 BOARD_KERNEL_BASE := 0x40200000
 BOARD_PAGE_SIZE := 2048
 
-TARGET_USE_SCORPION_BIONIC_OPTIMIZATION := true
-
 BOARD_NEEDS_CUTILS_LOG := true
 
 TARGET_PROVIDES_RELEASETOOLS := true
@@ -115,7 +112,6 @@ BOARD_NO_EXT4_LAZYINIT := true
 
 # Define kernel config for inline building
 TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
-
 
 # Define Prebuilt kernel locations
 TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
