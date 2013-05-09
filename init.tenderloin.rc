@@ -38,17 +38,24 @@ on init
     mount ext3 /dev/block/mmcblk0p13 /boot remount ro wait noatime barrier=1
 
 
-	export EXTERNAL_STORAGE /mnt/sdcard
-	mkdir /mnt/sdcard 0000 system system
-	# for backwards compatibility
-	symlink /mnt/sdcard /sdcard
+    export EXTERNAL_STORAGE /storage/sdcard0
+    mkdir /storage 0050 system sdcard_r
+    mkdir /storage/sdcard0 0000 system system
+    # for backwards compatibility
+    symlink /storage/sdcard0 /mnt/sdcard
+    symlink /mnt/sdcard /sdcard
 
 on post-fs
-	# camera calibration
-	mkdir /data/misc/camera 0770 media media
-	mkdir /data/misc/camera/R5_MVEN003_LD2_ND0_IR0_SH0_FL1_SVEN003_DCCID1044 0770 media media
+    # camera calibration
+    mkdir /data/misc/camera 0770 media system
+    mkdir /data/misc/camera/R5_MVEN003_LD2_ND0_IR0_SH0_FL1_SVEN003_DCCID1044 0770 media media
 
-	setprop vold.post_fs_data_done 1
+    # camera config
+    exec /system/bin/touch /data/misc/camera/config.txt
+    chown media system /data/misc/camera/config.txt
+    chmod 660 /data/misc/camera/config.txt
+
+    setprop vold.post_fs_data_done 1
 
 on init
 
@@ -82,11 +89,11 @@ on init
     setrlimit 7 10000 10000
 
 on boot
-	mount debugfs /sys/kernel/debug /sys/kernel/debug
+    mount debugfs /sys/kernel/debug /sys/kernel/debug
 
     mkdir /data/misc/wifi 0770 system wifi
     mkdir /data/misc/wifi/sockets 0770 system wifi
-	mkdir /data/misc/dhcp
+    mkdir /data/misc/dhcp
     chown dhcp dhcp /data/misc/dhcp
     mount debugfs /sys/kernel/debug /sys/kernel/debug
 
@@ -107,7 +114,7 @@ on boot
     chown bluetooth bluetooth /sys/user_hw/pins/bt/host_wake/level
 
     # Headphone jack detection
-	chown audio audio /dev/input/event5
+    chown audio audio /dev/input/event5
     chmod 0660 /dev/input/event5
 
     # Increase readahead buffers on MMC devices
@@ -137,6 +144,8 @@ on boot
     insmod /system/lib/modules/cifs.ko
     insmod /system/lib/modules/ntfs.ko
     insmod /system/lib/modules/tun.ko
+
+    # compat-wireless modules needed for ath6kl
     insmod /system/lib/modules/compat.ko
     insmod /system/lib/modules/cfg80211.ko
 

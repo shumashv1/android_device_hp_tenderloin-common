@@ -21,6 +21,7 @@
 #define MSMFB_IOCTL_MAGIC 'm'
 #define MSMFB_GRP_DISP          _IOW(MSMFB_IOCTL_MAGIC, 1, unsigned int)
 #define MSMFB_BLIT              _IOW(MSMFB_IOCTL_MAGIC, 2, unsigned int)
+#define MSMFB_OVERLAY_COMMIT    _IOW(MSMFB_IOCTL_MAGIC, 163, unsigned int)
 #define MSMFB_SUSPEND_SW_REFRESHER _IOW(MSMFB_IOCTL_MAGIC, 128, unsigned int)
 #define MSMFB_RESUME_SW_REFRESHER _IOW(MSMFB_IOCTL_MAGIC, 129, unsigned int)
 #define MSMFB_CURSOR _IOW(MSMFB_IOCTL_MAGIC, 130, struct fb_cursor)
@@ -63,8 +64,6 @@
 #define MSMFB_WRITEBACK_DEQUEUE_BUFFER _IOW(MSMFB_IOCTL_MAGIC, 154, \
 						struct msmfb_data)
 #define MSMFB_WRITEBACK_TERMINATE _IO(MSMFB_IOCTL_MAGIC, 155)
-#define MSMFB_OVERLAY_VSYNC_CTRL _IOW(MSMFB_IOCTL_MAGIC, 160, unsigned int)
-#define MSMFB_OVERLAY_COMMIT  _IOW(MSMFB_IOCTL_MAGIC, 163, unsigned int)
 #define MSMFB_MDP_PP _IOWR(MSMFB_IOCTL_MAGIC, 156, struct msmfb_mdp_pp)
 
 #define FB_TYPE_3D_PANEL 0x10101010
@@ -142,13 +141,14 @@ enum {
 #define MDP_OV_PLAY_NOWAIT		0x00200000
 #define MDP_SOURCE_ROTATED_90		0x00100000
 #define MDP_DPP_HSIC			0x00080000
-#define MDP_BACKEND_COMPOSITION 0x00040000
 #define MDP_BORDERFILL_SUPPORTED	0x00010000
 #define MDP_SECURE_OVERLAY_SESSION      0x00008000
 #define MDP_MEMORY_ID_TYPE_FB		0x00001000
 
 #define MDP_TRANSP_NOP 0xffffffff
 #define MDP_ALPHA_NOP 0xff
+
+#define MDP_BACKEND_COMPOSITION  0x00040000
 
 #define MDP_FB_PAGE_PROTECTION_NONCACHED         (0)
 #define MDP_FB_PAGE_PROTECTION_WRITECOMBINE      (1)
@@ -232,7 +232,10 @@ struct msmfb_data {
 	int id;
 	uint32_t flags;
 	uint32_t priv;
+#if 0
+	// disable to match our kernel
 	uint32_t iova;
+#endif
 };
 
 #define MSMFB_NEW_REQUEST -1
@@ -240,9 +243,12 @@ struct msmfb_data {
 struct msmfb_overlay_data {
 	uint32_t id;
 	struct msmfb_data data;
+#if 0
+	// disable to match our kernel
 	uint32_t version_key;
 	struct msmfb_data plane1_data;
 	struct msmfb_data plane2_data;
+#endif
 };
 
 struct msmfb_img {
@@ -279,7 +285,10 @@ struct mdp_overlay {
 	uint32_t flags;
 	uint32_t id;
 	uint32_t user_data[8];
+#if 0
+	// disable to match our kernel
 	struct dpp_ctrl dpp;
+#endif
 };
 
 struct msmfb_overlay_3d {
@@ -460,3 +469,4 @@ int msm_fb_writeback_terminate(struct fb_info *info);
 #endif
 
 #endif /*_MSM_MDP_H_*/
+
