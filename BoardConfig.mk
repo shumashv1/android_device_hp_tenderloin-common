@@ -53,8 +53,8 @@ BOARD_USES_ALSA_AUDIO := false
 BOARD_WITH_ALSA_UTILS := false
 
 #Bluetooth
-BOARD_HAVE_BLUETOOTH := true
-BOARD_HAVE_BLUETOOTH_CSR := true
+BOARD_HAVE_BLUETOOTH := false
+BOARD_HAVE_BLUETOOTH_CSR := false
 
 # Define egl.cfg location
 BOARD_EGL_CFG := device/hp/tenderloin/egl.cfg
