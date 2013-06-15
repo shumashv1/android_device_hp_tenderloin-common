@@ -111,7 +111,8 @@ BOARD_USES_CUSTOM_FSCK_MSDOS := true
 BOARD_NO_EXT4_LAZYINIT := true
 
 # Define kernel config for inline building
-TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
+#tenderloin_android_defconfig
+TARGET_KERNEL_CONFIG := 
 
 # Define Prebuilt kernel locations
 TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
