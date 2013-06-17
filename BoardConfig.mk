@@ -53,8 +53,8 @@ BOARD_USES_ALSA_AUDIO := false
 BOARD_WITH_ALSA_UTILS := false
 
 #Bluetooth
-BOARD_HAVE_BLUETOOTH := false
-BOARD_HAVE_BLUETOOTH_CSR := false
+BOARD_HAVE_BLUETOOTH := true
+BOARD_HAVE_BLUETOOTH_CSR := true
 
 # Define egl.cfg location
 BOARD_EGL_CFG := device/hp/tenderloin/egl.cfg
@@ -111,8 +111,7 @@ BOARD_USES_CUSTOM_FSCK_MSDOS := true
 BOARD_NO_EXT4_LAZYINIT := true
 
 # Define kernel config for inline building
-#tenderloin_android_defconfig
-TARGET_KERNEL_CONFIG := 
+TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
 
 # Define Prebuilt kernel locations
 TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
