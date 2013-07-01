@@ -955,6 +955,7 @@ int calc_point(void)
 				tp[tpoint][k].touch_major);
 			send_uevent(uinput_fd, EV_ABS, ABS_MT_POSITION_X, tp[tpoint][k].x);
 			send_uevent(uinput_fd, EV_ABS, ABS_MT_POSITION_Y, tp[tpoint][k].y);
+			send_uevent(uinput_fd, EV_ABS, ABS_MT_PRESSURE, tp[tpoint][k].pw);
 #if !USE_B_PROTOCOL
 			send_uevent(uinput_fd, EV_SYN, SYN_MT_REPORT, 0);
 #endif
@@ -1060,6 +1061,11 @@ void open_uinput(void)
 	device.absflat[ABS_MT_POSITION_X] = 0;
 	device.absfuzz[ABS_MT_POSITION_Y] = 1;
 	device.absflat[ABS_MT_POSITION_Y] = 0;
+
+	device.absmax[ABS_MT_PRESSURE] = 2000;
+	device.absmin[ABS_MT_PRESSURE] = 250;
+	device.absfuzz[ABS_MT_PRESSURE] = 0;
+	device.absflat[ABS_MT_PRESSURE] = 0;
 
 	if (write(uinput_fd,&device,sizeof(device)) != sizeof(device))
 		ALOGE("error setup\n");
@@ -1171,8 +1177,8 @@ void create_ts_socket(int *socket_fd) {
 	else
 		ALOGE("Error creating socket\n");
 #endif
-	//Sets file to 660
-	chmod(TS_SOCKET_LOCATION, 432);
+	// change perms to 0666 (438 decimal)
+	chmod(TS_SOCKET_LOCATION, 438);
 	//Sets owner/user to system
 	chown(TS_SOCKET_LOCATION, 1000,1000);
 }

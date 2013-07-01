@@ -14,14 +14,14 @@ TARGET_BOARD_PLATFORM := msm8660
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
 BOARD_USES_ADRENO_200 := true
 
-TARGET_CPU_ABI := armeabi-v7a
 TARGET_ARCH := arm
+TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_SMP := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
-TARGET_DISABLE_ARM_PIE := true
 
+TARGET_DISABLE_ARM_PIE := true
 TARGET_NO_RADIOIMAGE := true
 TARGET_HAVE_TSLIB := false
 TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
@@ -55,6 +55,7 @@ BOARD_WITH_ALSA_UTILS := false
 #Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_CSR := true
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/hp/tenderloin/bluetooth
 
 # Define egl.cfg location
 BOARD_EGL_CFG := device/hp/tenderloin/egl.cfg
@@ -113,9 +114,20 @@ BOARD_NO_EXT4_LAZYINIT := true
 # Define kernel config for inline building
 TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
 
+KERNEL_WIFI_MODULES:
+	cd external/compat-drivers; ./scripts/driver-select ath6kl
+	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/compat-drivers KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/compat-drivers KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE) install-modules
+	cp `find $(KERNEL_OUT)/$(TARGET_KERNEL_SOURCE) -name *.ko` $(KERNEL_MODULES_OUT)/
+	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
+	cd external/compat-drivers; ./scripts/driver-select restore
+
+TARGET_KERNEL_MODULES := KERNEL_WIFI_MODULES
+
 # Define Prebuilt kernel locations
 TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/hp/tenderloin/recovery/recovery_ui.c
+BOARD_UMS_LUNFILE := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file"
 TARGET_RECOVERY_INITRC := device/hp/tenderloin/recovery/init.rc
 BOARD_HAS_NO_SELECT_BUTTON := false
 
@@ -129,6 +141,7 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 
 TARGET_RELEASETOOLS_EXTENSIONS := device/hp/common
 
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file"
 BOARD_HAS_SDCARD_INTERNAL := false
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true

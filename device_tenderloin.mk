@@ -24,6 +24,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_CHARACTERISTICS := tablet
 
 PRODUCT_AAPT_CONFIG := xlarge mdpi hdpi
+PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 PRODUCT_PACKAGES += \
 	make_ext4fs
@@ -64,7 +65,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
-    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml \
+    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml
@@ -86,7 +87,9 @@ PRODUCT_PACKAGES += \
 	libOmxCore \
 	libmm-omxcore \
 	libdivxdrmdecrypt \
-	libOmxVdec
+	libOmxVdec \
+	libOmxAacEnc \
+	libOmxAmrEnc
 
 # QCOM OMX Video Encoding
 PRODUCT_PACKAGES += \
@@ -121,6 +124,7 @@ PRODUCT_PACKAGES += \
 
 # Sensors, misc
 PRODUCT_PACKAGES += \
+	power.tenderloin \
     librs_jni \
     wpa_supplicant.conf \
     libmllite \
@@ -146,25 +150,7 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/usr/keylayout/handset.kl:system/usr/keylayout/handset.kl \
     device/hp/tenderloin/prebuilt/usr/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
     device/hp/tenderloin/prebuilt/usr/keylayout/AVRCP.kl:system/usr/keylayout/AVRCP.kl \
-    device/hp/tenderloin/prebuilt/usr/keylayout/pmic8058_pwrkey.kl:system/usr/keylayout/pmic8058_pwrkey.kl \
-    device/hp/tenderloin/prebuilt/bluetooth/hciattach:system/bin/hciattach_awesome 
-    
-# Misc Modules
-PRODUCT_COPY_FILES += \
-    device/hp/tenderloin/prebuilt/modules/cifs.ko:system/lib/modules/cifs.ko \
-    device/hp/tenderloin/prebuilt/modules/ntfs.ko:system/lib/modules/ntfs.ko \
-    device/hp/tenderloin/prebuilt/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
-    device/hp/tenderloin/prebuilt/modules/tun.ko:system/lib/modules/tun.ko
-
-# Wifi Modules
-PRODUCT_COPY_FILES += \
-    device/hp/tenderloin/prebuilt/wifi/ath6kl.ko:system/lib/modules/ath6kl.ko \
-    device/hp/tenderloin/prebuilt/wifi/ath.ko:system/lib/modules/ath.ko \
-    device/hp/tenderloin/prebuilt/wifi/cfg80211.ko:system/lib/modules/cfg80211.ko \
-    device/hp/tenderloin/prebuilt/wifi/mac80211.ko:system/lib/modules/mac80211.ko \
-    device/hp/tenderloin/prebuilt/wifi/compat.ko:system/lib/modules/compat.ko \
-    device/hp/tenderloin/prebuilt/wifi/sch_codel.ko:system/lib/modules/sch_codel.ko
-    device/hp/tenderloin/prebuilt/wifi/sch_fq_codel.ko:system/lib/modules/sch_fw_codel.ko
+    device/hp/tenderloin/prebuilt/usr/keylayout/pmic8058_pwrkey.kl:system/usr/keylayout/pmic8058_pwrkey.kl
 
 #Wifi Firmware
 # from kernel.org

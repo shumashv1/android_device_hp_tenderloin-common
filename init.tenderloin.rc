@@ -37,18 +37,22 @@ on init
     # remount /boot read-only
     mount ext3 /dev/block/mmcblk0p13 /boot remount ro wait noatime barrier=1
 
+    mkdir /storage 0050 system sdcard_r	
 
-    export EXTERNAL_STORAGE /storage/sdcard0
-    mkdir /storage 0050 system sdcard_r
-    mkdir /storage/sdcard0 0000 system system
-    # for backwards compatibility
-    symlink /storage/sdcard0 /mnt/sdcard
-    symlink /mnt/sdcard /sdcard
+    mkdir /mnt/shell/sdcard 0700 shell shell
+    mkdir /storage/sdcard 0555 root root
+
+    export EXTERNAL_STORAGE /storage/sdcard
+
+    # Support legacy paths
+    symlink /storage/sdcard /sdcard
+    symlink /storage/sdcard /mnt/sdcard
+    symlink /storage/sdcard /storage/sdcard0
 
 on post-fs
-    # camera calibration
-    mkdir /data/misc/camera 0770 media system
-    mkdir /data/misc/camera/R5_MVEN003_LD2_ND0_IR0_SH0_FL1_SVEN003_DCCID1044 0770 media media
+	# camera calibration
+	mkdir /data/misc/camera 0770 media media
+	mkdir /data/misc/camera/R5_MVEN003_LD2_ND0_IR0_SH0_FL1_SVEN003_DCCID1044 0770 media media
 
     # camera config
     exec /system/bin/touch /data/misc/camera/config.txt
@@ -139,12 +143,6 @@ on boot
     write /sys/module/rpm_resources/enable_low_power/L2_cache 1
     write /sys/module/rpm_resources/enable_low_power/pxo 1
 
-    # modules
-    insmod /system/lib/modules/nls_utf8.ko
-    insmod /system/lib/modules/cifs.ko
-    insmod /system/lib/modules/ntfs.ko
-    insmod /system/lib/modules/tun.ko
-
     # compat-wireless modules needed for ath6kl
     insmod /system/lib/modules/compat.ko
     insmod /system/lib/modules/cfg80211.ko
@@ -207,10 +205,10 @@ service dcvs1 /system/bin/dcvs --cpu=1 --slacktime=64
     user root
     disabled
 
-service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
-    class core
-    user root
-    disabled
+#service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
+#    class core
+#    user root
+#    disabled
 
 service thermald /system/bin/thermald
     class core
@@ -224,7 +222,7 @@ service serial /sbin/serial
 
 on property:init.svc.bootanim=stopped
     start thermald
-    start mpdecision
+#    start mpdecision
 
 on post-fs-data
 	setprop vold.post_fs_data_done 1
