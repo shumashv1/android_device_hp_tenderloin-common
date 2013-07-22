@@ -116,11 +116,11 @@ TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
 TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
 
 EXTRA_MODULES:
-        $(MAKE) -C external/backports defconfig-ath6kl
-        export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
-        cp `find external/backports -name *.ko` $(KERNEL_MODULES_OUT)/
-        arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
-        $(MAKE) -C external/backports clean
+	$(MAKE) -C external/backports defconfig-ath6kl
+	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+	cp `find external/backports -name *.ko` $(KERNEL_MODULES_OUT)/
+	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
+	$(MAKE) -C external/backports clean
 
 TARGET_KERNEL_MODULES := EXTRA_MODULES
 
