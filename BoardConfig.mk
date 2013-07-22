@@ -113,16 +113,16 @@ BOARD_NO_EXT4_LAZYINIT := true
 
 # Define kernel config for inline building
 TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
+TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
 
-KERNEL_WIFI_MODULES:
-	cd external/backports-3.10-2; $(MAKE) defconfig-ath6kl; ./scripts/driver-select ath6kl
-	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports-3.10-2 KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
-#	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports-3.10-2 KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE) install-modules
-	cp `find $(KERNEL_OUT)/$(TARGET_KERNEL_SOURCE) -name *.ko` $(KERNEL_MODULES_OUT)/
-	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
-	cd external/backports-3.10-2; ./scripts/driver-select restore
+EXTRA_MODULES:
+        $(MAKE) -C external/backports defconfig-ath6kl
+        export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+        cp `find external/backports -name *.ko` $(KERNEL_MODULES_OUT)/
+        arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
+        $(MAKE) -C external/backports clean
 
-TARGET_KERNEL_MODULES := KERNEL_WIFI_MODULES
+TARGET_KERNEL_MODULES := EXTRA_MODULES
 
 # Define Prebuilt kernel locations
 TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
