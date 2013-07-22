@@ -120,7 +120,7 @@ KERNEL_WIFI_MODULES:
 	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports-3.10-2 KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE) install-modules
 	cp `find $(KERNEL_OUT)/$(TARGET_KERNEL_SOURCE) -name *.ko` $(KERNEL_MODULES_OUT)/
 	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
-	cd external/cbackports-3.10-2; ./scripts/driver-select restore
+	cd external/backports-3.10-2; ./scripts/driver-select restore
 
 TARGET_KERNEL_MODULES := KERNEL_WIFI_MODULES
 
