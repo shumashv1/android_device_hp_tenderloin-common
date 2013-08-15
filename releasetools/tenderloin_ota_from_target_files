@@ -66,7 +66,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
     script.RunBackup("backup")
     script.Unmount("/system")
 
-  script.ShowProgress(0.5, 0)
+  script.ShowProgress(0.5, 5)
 
   if OPTIONS.wipe_user_data:
     script.FormatPartition("/data")
@@ -94,15 +94,15 @@ def WriteFullOTAPackage(input_zip, output_zip):
   #common.CheckSize(boot_img.data, "boot.img", OPTIONS.info_dict)
   #common.ZipWriteStr(output_zip, "boot.img", boot_img.data)
   # -- tenderloin build change done
-  script.ShowProgress(0.2, 0)
+  script.ShowProgress(0.2, 5)
 
-  if true: #OPTIONS.backuptool:
-    script.ShowProgress(0.2, 10)
+  if True: #OPTIONS.backuptool:
+    script.ShowProgress(0.2, 5)
     script.RunBackup("restore")
 
 #  script.RunVerifyCachePartitionSize()
 
-  script.ShowProgress(0.2, 10)
+  script.ShowProgress(0.2, 5)
   # -- tenderloin build change starting
   #script.WriteRawImage("/boot", "boot.img")
 
