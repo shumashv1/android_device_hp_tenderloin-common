@@ -177,4 +177,8 @@
     <!-- Disable lockscreen translucent decor by default -->
     <bool name="config_enableLockScreenTranslucentDecor">true</bool>
 
+     <!-- Enable WiFi Display for Chromecast/Miracast -->
+   <bool name="config_enableWifiDisplay">true</bool>
+
+
 </resources>
