@@ -63,13 +63,15 @@
 
          Must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLevels">
-         <item>50</item>
-         <item>100</item>
-         <item>175</item>
-         <item>225</item>
-         <item>300</item>
-         <item>400</item>
-         <item>500</item>
+        <item>2</item>
+        <item>10</item>
+        <item>50</item>
+        <item>175</item>
+        <item>380</item>
+        <item>780</item>
+        <item>1150</item>
+        <item>1890</item>
+        <item>2465</item>
     </integer-array>
 
     <!-- Array of output values for LCD backlight corresponding to the
@@ -77,13 +79,15 @@
          should have size one greater than the size of the
          config_autoBrightnessLevels array. -->
     <integer-array name="config_autoBrightnessLcdBacklightValues">
-        <item>21</item>
-        <item>41</item>
+        <item>2</item>
+        <item>8</item>
+        <item>20</item>
+        <item>40</item>
         <item>75</item>
-        <item>100</item>
-        <item>150</item>
-        <item>200</item>
-        <item>225</item>
+        <item>135</item>
+        <item>180</item>
+        <item>210</item>
+        <item>230</item>
         <item>255</item>
     </integer-array>
 

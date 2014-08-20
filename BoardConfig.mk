@@ -95,6 +95,8 @@ TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/hp/tenderloin/releasetools/t
 # Define kernel config for inline building
 TARGET_KERNEL_CONFIG := cyanogenmod_tenderloin_defconfig
 TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
+BOARD_USES_LIBQC_OPT := true
+TARGET_KERNEL_CUSTOM_TOOLCHAIN := android-toolchain-eabi
 KERNEL_WIFI_MODULES:
 	$(MAKE) -C external/backports-wireless defconfig-ath6kl
 	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
