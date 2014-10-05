@@ -2,7 +2,7 @@
 # system.prop for tenderloin
 #
 
-ro.cwm.forbid_format=/boot
+ro.cwm.forbid_format=/boot,/storage/sdcard1
 
 wifi.interface=wlan0
 wifi.supplicant_scan_interval=45

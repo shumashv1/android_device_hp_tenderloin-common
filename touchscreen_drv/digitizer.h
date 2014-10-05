@@ -44,6 +44,18 @@ void init_digitizer_fd(void);
 #define __FD_ZERO(fdsetp)   (memset (fdsetp, 0, sizeof (*(fd_set *)(fdsetp))))
 #endif
 
+#ifdef TPTS_ALOG
+#define TSLOGD ALOGD
+#define TSLOGE ALOGE
+#define TSLOGV ALOGV
+#define TSLOGI ALOGI
+#else
+#define TSLOGD(...) do {} while (0)
+#define TSLOGE(...) do {} while (0)
+#define TSLOGV(...) do {} while (0)
+#define TSLOGI(...) do {} while (0)
+#endif
+
 #ifndef NFDBITS
 #define NFDBITS __NFDBITS
 #endif
