@@ -66,6 +66,7 @@ on fs
     start sdcard
 
 on post-fs-data
+    chmod 0777 /data
     mkdir /data/media 0770 media_rw media_rw
     chown media_rw media_rw /data/media
 
