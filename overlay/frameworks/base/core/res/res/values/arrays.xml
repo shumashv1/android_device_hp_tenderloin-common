@@ -20,6 +20,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Defines the shutdown options shown in the reboot dialog. -->
+ <add-resource>
     <array name="shutdown_reboot_options" translatable="false">
         <item>@string/reboot_reboot</item>
         <item>@string/reboot_soft</item>
@@ -33,5 +34,6 @@
         <item>soft_reboot</item>
         <item>recovery</item>
     </string-array>
+ </add-resource>
 
 </resources>
