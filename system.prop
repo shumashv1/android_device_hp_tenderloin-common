@@ -2,8 +2,6 @@
 # system.prop for tenderloin
 #
 
-ro.cwm.forbid_format=/boot
-
 wifi.interface=wlan0
 wifi.supplicant_scan_interval=45
 
