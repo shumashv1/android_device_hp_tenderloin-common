@@ -100,6 +100,7 @@ KERNEL_WIFI_MODULES:
 
 TARGET_KERNEL_MODULES := KERNEL_WIFI_MODULES
 
+TARGET_RECOVERY_DEVICE_DIRS += device/hp/tenderloin
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/hp/tenderloin/recovery/recovery_ui.c
 BOARD_CUSTOM_GRAPHICS:= ../../../device/hp/tenderloin/recovery/graphics.c
 RECOVERY_FSTAB_VERSION=2
