@@ -124,7 +124,9 @@ PRODUCT_PACKAGES += \
     ts_srv_set \
     serial \
     com.android.future.usb.accessory \
-    rebootcmd
+    rebootcmd \
+    wpa_supplicant \
+    wpa_supplicant.conf
 
 # Camera
 PRODUCT_PACKAGES += \
