@@ -81,6 +81,10 @@ camera_module_t HAL_MODULE_INFO_SYM = {
     },
     get_number_of_cameras: camera_get_number_of_cameras,
     get_camera_info: camera_get_camera_info,
+    set_callbacks: NULL, /* remove compilation warnings */
+    get_vendor_tag_ops: NULL, /* remove compilation warnings */
+    open_legacy: NULL, /* remove compilation warnings */
+    reserved: {0}, /* remove compilation warnings */
 };
 
 typedef struct priv_camera_device {
