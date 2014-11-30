@@ -71,7 +71,8 @@ PRODUCT_PACKAGES += \
     libgenlock \
     libmemalloc \
     liboverlay \
-    libqdutils
+    hardware/qcom/display-caf/msm8960/libqdutils
+#    libqdutils
 
 # Omx
 PRODUCT_PACKAGES += \
