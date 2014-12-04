@@ -68,10 +68,10 @@ PRODUCT_PACKAGES += \
 
 # QCOM Display
 PRODUCT_PACKAGES += \
+    libqdutils \
     libgenlock \
     libmemalloc \
-    liboverlay \
-    libqdutils
+    liboverlay
 
 # Omx
 PRODUCT_PACKAGES += \
@@ -130,8 +130,8 @@ PRODUCT_PACKAGES += \
     wpa_supplicant.conf
 
 # Camera
-PRODUCT_PACKAGES += \
-    camera.tenderloin
+#PRODUCT_PACKAGES += \
+#    camera.tenderloin
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
