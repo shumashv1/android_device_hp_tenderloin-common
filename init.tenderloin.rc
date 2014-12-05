@@ -245,6 +245,13 @@ service serial /sbin/serial
     disabled
     oneshot
 
+service reboot_recovery /system/bin/moboot_control.sh recovery
+     class core
+     user root
+     group root
+     disabled
+     oneshot
+
 on property:init.svc.bootanim=stopped
     start mpdecision
 

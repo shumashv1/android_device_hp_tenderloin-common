@@ -18,9 +18,6 @@ fi
 
 # OS X users change the line below to point to mkimage
 MKIMAGE=$OUT/../../../host/linux-x86/bin/mkimage
-if [ ! -f "$MKIMAGE" ]; then
-    MKIMAGE=mkimage
-fi
 KERNEL=~/gh/CyanogenMod/hp-kernel-tenderloin/
 ROOT=$OUT/root
 CPIO_TARGET=ramdisk.img

@@ -68,10 +68,16 @@ PRODUCT_PACKAGES += \
 
 # QCOM Display
 PRODUCT_PACKAGES += \
+    libqdutils \
     libgenlock \
     libmemalloc \
+<<<<<<< HEAD
     liboverlay \
-    libqdutils
+    hardware/qcom/display-caf/msm8960/libqdutils
+#    libqdutils
+=======
+    liboverlay
+>>>>>>> 924eb589c77cd16e48954117c444af82a1aca265
 
 # Omx
 PRODUCT_PACKAGES += \
@@ -102,8 +108,7 @@ PRODUCT_PACKAGES += \
     audio.r_submix.default \
     tinymix \
     tinyplay \
-    tinycap \
-    libsrec_jni
+    tinycap
 
 # libnetcmdiface
 PRODUCT_PACKAGES += \
@@ -126,10 +131,9 @@ PRODUCT_PACKAGES += \
     ts_srv_set \
     serial \
     com.android.future.usb.accessory \
+    rebootcmd \
     wpa_supplicant \
     wpa_supplicant.conf
-
-#    rebootcmd \
 
 # Camera
 #PRODUCT_PACKAGES += \

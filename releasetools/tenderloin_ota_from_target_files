@@ -41,9 +41,12 @@ def WriteFullOTAPackage(input_zip, output_zip):
   # change very often.
   script = edify_generator.EdifyGenerator(3, OPTIONS.info_dict)
 
-  metadata = {"post-build": GetBuildProp("ro.build.fingerprint", OPTIONS.info_dict),
-              "pre-device": GetBuildProp("ro.product.device", OPTIONS.info_dict),
-              "post-timestamp": GetBuildProp("ro.build.date.utc", OPTIONS.info_dict),
+  metadata = {"post-build": GetBuildProp("ro.build.fingerprint",
+                                         OPTIONS.info_dict),
+              "pre-device": GetBuildProp("ro.product.device",
+                                         OPTIONS.info_dict),
+              "post-timestamp": GetBuildProp("ro.build.date.utc",
+                                             OPTIONS.info_dict),
               }
 
   device_specific = common.DeviceSpecificParams(
@@ -55,28 +58,26 @@ def WriteFullOTAPackage(input_zip, output_zip):
       metadata=metadata,
       info_dict=OPTIONS.info_dict)
 
-#  if not OPTIONS.omit_prereq:
-#    ts = GetBuildProp("ro.build.date.utc", input_zip)
-#    script.AssertOlderBuild(ts)
-
   AppendAssertions(script, OPTIONS.info_dict)
   device_specific.FullOTA_Assertions()
-  if OPTIONS.backuptool:
-    script.Mount("/system")
-    script.RunBackup("backup")
-    script.Unmount("/system")
+  device_specific.FullOTA_InstallBegin()
 
   script.ShowProgress(0.5, 0)
 
   if OPTIONS.wipe_user_data:
+    script.Print("Wiping user data")
     script.FormatPartition("/data")
 
+  script.Print("Formatting system")
   script.FormatPartition("/system")
   script.Mount("/system")
   script.UnpackPackageDir("recovery", "/system")
-  script.UnpackPackageDir("system", "/system")
 
-  symlinks = CopySystemFiles(input_zip, output_zip)
+  script.Print("Installing PAC-man")
+  script.UnpackPackageDir("system", "/system")
+  system_items = ItemSet("system", "META/filesystem_config.txt")
+
+  symlinks = CopyPartitionFiles(system_items, input_zip, output_zip)
   script.MakeSymlinks(symlinks)
 
   # -- tenderloin build change starting
@@ -87,18 +88,16 @@ def WriteFullOTAPackage(input_zip, output_zip):
   #MakeRecoveryPatch(output_zip, recovery_img, boot_img)
   # -- tenderloin build change done
 
-  Item.GetMetadata(input_zip)
-  Item.Get("system").SetPermissions(script)
+  system_items.GetMetadata(input_zip)
+
+  script.Print("Setting permissions")
+  system_items.Get("system").SetPermissions(script)
 
   # -- tenderloin build change starting
   #common.CheckSize(boot_img.data, "boot.img", OPTIONS.info_dict)
   #common.ZipWriteStr(output_zip, "boot.img", boot_img.data)
   # -- tenderloin build change done
   script.ShowProgress(0.2, 0)
-
-  if OPTIONS.backuptool:
-    script.ShowProgress(0.2, 10)
-    script.RunBackup("restore")
 
 #  script.RunVerifyCachePartitionSize()
 
@@ -119,7 +118,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   script.UnpackPackageFile("moboot.splash.CyanogenMod.tga", "/boot/moboot.splash.CyanogenMod.tga")
 
-  # -- tenderloin build change done
+   # -- tenderloin build change done
 
   script.ShowProgress(0.1, 0)
   device_specific.FullOTA_InstallEnd()
@@ -134,7 +133,7 @@ ota_from_target_files.WriteFullOTAPackage = WriteFullOTAPackage
 
 
 def WriteIncrementalOTAPackage(target_zip, source_zip, output_zip):
-    print "Incremental OTA Packages are not support on the hp tenderloin at this time"
+    print "Incremental OTA Packages are not supported on the hp tenderloin at this time"
     sys.exit(1)
 ota_from_target_files.WriteIncrementalOTAPackage = WriteIncrementalOTAPackage
 
@@ -148,3 +147,4 @@ if __name__ == '__main__':
     print "   ERROR: %s" % (e,)
     print
     sys.exit(1)
+
