@@ -100,6 +100,7 @@ TARGET_KERNEL_MODULES := KERNEL_WIFI_MODULES
 TARGET_RECOVERY_DEVICE_DIRS += device/hp/tenderloin
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/hp/tenderloin/recovery/recovery_ui.c
 BOARD_CUSTOM_GRAPHICS:= ../../../device/hp/tenderloin/recovery/graphics.c
+TARGET_RECOVERY_SCREEN_WIDTH := 720
 RECOVERY_FSTAB_VERSION=2
 TARGET_RECOVERY_FSTAB = device/hp/tenderloin/recovery/recovery.fstab
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
