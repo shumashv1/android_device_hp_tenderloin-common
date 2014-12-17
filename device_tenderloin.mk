@@ -199,8 +199,6 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/releasetools/makemulti.sh:makemulti.sh \
     device/hp/tenderloin/prebuilt/boot/moboot.splash.CyanogenMod.tga:moboot.splash.CyanogenMod.tga
 
-LOCAL_C_INCLUDES := hardware/libhardware/include/hardware/
-
 $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
 
 $(call inherit-product-if-exists, vendor/hp/tenderloin/tenderloin-vendor.mk)
