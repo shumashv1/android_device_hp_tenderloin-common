@@ -15,7 +15,6 @@ ART_DONT_CHECK_GAP := true
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_KERNEL := false
-TARGET_NO_RECOVERY_PATCH := true
 TARGET_NO_RADIOIMAGE := true
 
 TARGET_BOOTLOADER_BOARD_NAME := tenderloin
@@ -28,7 +27,6 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := scorpion
-TARGET_CPU_SMP := true
 TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
 
 COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=59 -DNEEDS_VECTORIMPL_SYMBOLS -DICS_CAMERA_BLOB
@@ -107,6 +105,7 @@ BOARD_CUSTOM_BOOTIMG_MK := device/hp/tenderloin/releasetools/uboot-bootimg.mk
 TARGET_PROVIDES_RELEASETOOLS := true
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_img_from_target_files
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_ota_from_target_files
+TARGET_RELEASETOOL_MAKE_RECOVERY_PATCH_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_make_recovery_patch
 
 # Define kernel config for inline building
 TARGET_KERNEL_CONFIG := cyanogenmod_tenderloin_defconfig
