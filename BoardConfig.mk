@@ -64,6 +64,8 @@ TARGET_DISPLAY_INSECURE_MM_HEAP := true
 # Use retire fence from MDP driver
 TARGET_DISPLAY_USE_RETIRE_FENCE := true
 
+TARGET_NO_ADAPTIVE_PLAYBACK := true
+
 # camera
 USE_CAMERA_STUB := false
 TARGET_DISABLE_ARM_PIE := true
