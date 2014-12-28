@@ -4,8 +4,8 @@
 # Set true to use custom i.e. linaro, false to use prebuilts
 USE_CUSTOM_TOOLCHAIN := false
 
-# Use Java 1.6
-#LEGACY_USE_JAVA6 := true
+# Allow SELinux to be disabled
+ALLOW_DISABLE_SELINUX := true
 
 TARGET_SPECIFIC_HEADER_PATH := device/hp/tenderloin/include
 
@@ -15,6 +15,7 @@ ART_DONT_CHECK_GAP := true
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_KERNEL := false
+TARGET_NO_RECOVERY_PATCH := true
 TARGET_NO_RADIOIMAGE := true
 
 TARGET_BOOTLOADER_BOARD_NAME := tenderloin
