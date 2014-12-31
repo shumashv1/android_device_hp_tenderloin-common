@@ -16,7 +16,7 @@
 #ifndef _LINUX_MSM_ION_H
 #define _LINUX_MSM_ION_H
 
-#include <linux/ion.h>
+//#include <linux/ion.h>
 
 enum msm_ion_heap_types {
 	ION_HEAP_TYPE_MSM_START = ION_HEAP_TYPE_CUSTOM + 1,
