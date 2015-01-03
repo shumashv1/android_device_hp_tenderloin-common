@@ -97,7 +97,7 @@ BOARD_CAMERA_USE_ENCODEDATA := true
 BOARD_USES_LEGACY_MMAP := true
 
 # kernel settings
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom androidboot.selinux=disabled
 BOARD_KERNEL_BASE := 0x40200000
 BOARD_PAGE_SIZE := 2048
 
