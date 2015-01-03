@@ -4,7 +4,7 @@
 
 # ro.cwm.forbid_format=/boot,/storage/sdcard1
 
-ro.boot.selinux=permissive
+ro.boot.selinux=disabled
 
 wifi.interface=wlan0
 wifi.supplicant_scan_interval=45
