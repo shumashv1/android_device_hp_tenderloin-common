@@ -29,6 +29,7 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/fstab.tenderloin:root/fstab.tenderloin \
     device/hp/tenderloin/prebuilt/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
     device/hp/tenderloin/prebuilt/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
+    device/hp/tenderloin/prebuilt/tptoolbox.cfg:tptoolbox.cfg \
     device/hp/tenderloin/configs/HPTouchpad.idc:system/usr/idc/HPTouchpad.idc
 
 # Bluetooth
