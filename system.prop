@@ -12,3 +12,5 @@ debug.sf.hw=1
 debug.egl.hw=1
 debug.egl.recordable.rgba8888=1
 debug.composition.type=dyn
+
+persist.sys.media.use-awesome=true
