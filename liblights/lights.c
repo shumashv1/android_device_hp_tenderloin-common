@@ -32,7 +32,6 @@
 static pthread_once_t g_init = PTHREAD_ONCE_INIT;
 static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static int g_btnled_on = 0;
 static int g_notled_on = 0;
 static int g_batled_on = 0;
 
@@ -140,8 +139,8 @@ is_lit(struct light_state_t const* state)
 static void set_navled(int on)
 {
 	if (on) {
-		write_int(LEFTNAVI_FILE, 25);
-		write_int(RIGHTNAVI_FILE, 25);
+		write_int(LEFTNAVI_FILE, 100);
+		write_int(RIGHTNAVI_FILE, 100);
 	} else {
 		write_int(LEFTNAVI_FILE, 0);
 		write_int(RIGHTNAVI_FILE, 0);
@@ -253,23 +252,6 @@ program_notification_led(int state)
 
 }
 
-static int
-set_light_buttons(struct light_device_t* dev,
-        struct light_state_t const* state)
-{
-	ALOGV("set_light_buttons called with state = %d", g_btnled_on);
-
-    pthread_mutex_lock(&g_lock);
-    g_btnled_on = is_lit(state);
-    if (g_btnled_on)
-        set_navled(1);
-    else if (!g_btnled_on && !g_notled_on && !g_batled_on)
-        set_navled(0);
-    pthread_mutex_unlock(&g_lock);
-
-    return 0;
-}
-
 static int set_light_notifications(struct light_device_t* dev,
 			struct light_state_t const* state)
 {
@@ -294,11 +276,11 @@ static int set_light_notifications(struct light_device_t* dev,
 				program_notification_led(4);
 			}
 		}
-	} else if (!g_notled_on) {
-		program_notification_led(0);
-		if (g_btnled_on || g_batled_on)
-			set_navled(1);
-	}
+    } else {
+        program_notification_led(0);
+        if (g_batled_on)
+            set_navled(1);
+    }
     pthread_mutex_unlock(&g_lock);
 
     return 0;
@@ -313,12 +295,13 @@ static int set_light_battery (struct light_device_t* dev,
     ALOGV("set_light_battery called with state = %d", g_batled_on);
 
     pthread_mutex_lock(&g_lock);
-	g_batled_on = red&&!is_discharging();
-
-    if (g_batled_on && !g_notled_on)
-        set_navled(1);
-    else if (!g_batled_on && !g_notled_on && !g_btnled_on)
-        set_navled(0);
+    g_batled_on = red&&!is_discharging();
+    if (!g_notled_on) {
+        if (g_batled_on)
+            set_navled(1);
+        else
+            set_navled(0);
+    }
     pthread_mutex_unlock(&g_lock);
 
     return 0;
@@ -355,8 +338,6 @@ static int open_lights(const struct hw_module_t *module, char const *name,
 
 	if (0 == strcmp(LIGHT_ID_BACKLIGHT, name))
 		set_light = set_light_backlight;
-	else if (0 == strcmp(LIGHT_ID_BUTTONS, name))
-		set_light = set_light_buttons;
 	else if (0 == strcmp(LIGHT_ID_NOTIFICATIONS, name))
 		set_light = set_light_notifications;
 	else if (0 == strcmp(LIGHT_ID_BATTERY, name))
