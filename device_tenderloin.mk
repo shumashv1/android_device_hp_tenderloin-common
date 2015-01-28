@@ -132,7 +132,12 @@ PRODUCT_PACKAGES += \
     ts_srv_set \
     serial \
     com.android.future.usb.accessory \
-    rebootcmd \
+    rebootcmd
+
+# Wifi
+PRODUCT_PACKAGES += \
+    dhcpcd.conf \
+    libwpa_client \
     wpa_supplicant \
     wpa_supplicant.conf
 
