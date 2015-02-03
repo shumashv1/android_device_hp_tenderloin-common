@@ -98,7 +98,8 @@ BOARD_CAMERA_USE_ENCODEDATA := true
 BOARD_USES_LEGACY_MMAP := true
 
 # kernel settings
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom androidboot.selinux=disabled
+KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-4.7/bin
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x40200000
 BOARD_PAGE_SIZE := 2048
 
@@ -122,7 +123,7 @@ endif
 
 KERNEL_WIFI_MODULES:
 	$(MAKE) -C external/backports-wireless defconfig-ath6kl
-	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
 	cp `find external/backports-wireless -name *.ko` $(KERNEL_MODULES_OUT)/
 	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
 	$(MAKE) -C external/backports-wireless clean
