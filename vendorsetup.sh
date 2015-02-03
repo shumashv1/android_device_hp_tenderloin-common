@@ -23,9 +23,9 @@
 # HACK: Create symlink folder to point to proper qcom platform sources
 TOPDIR=$PWD
 
-ln -s -f $TOPDIR/hardware/qcom/display-caf/msm8960 $TOPDIR/hardware/qcom/display-caf/msm8660
+#ln -s -f $TOPDIR/hardware/qcom/display-caf/msm8960 $TOPDIR/hardware/qcom/display-caf/msm8660
 ln -s -f $TOPDIR/hardware/qcom/audio-caf/msm8960 $TOPDIR/hardware/qcom/audio-caf/msm8660
-ln -s -f $TOPDIR/hardware/qcom/media-caf/msm8960 $TOPDIR/hardware/qcom/media-caf/msm8660
+#ln -s -f $TOPDIR/hardware/qcom/media-caf/msm8960 $TOPDIR/hardware/qcom/media-caf/msm8660
 cp -f -l $TOPDIR/hardware/libhardware/include/hardware/gralloc.h $TOPDIR/frameworks/av/include
 cp -f -l $TOPDIR/device/hp/tenderloin/libbt-vendor/include/hardware.h $TOPDIR/frameworks/av/include
 cp -f -l $TOPDIR/kernel/hp/tenderloin/include/linux/fb.h $TOPDIR/frameworks/av/include

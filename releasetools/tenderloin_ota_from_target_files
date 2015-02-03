@@ -41,12 +41,9 @@ def WriteFullOTAPackage(input_zip, output_zip):
   # change very often.
   script = edify_generator.EdifyGenerator(3, OPTIONS.info_dict)
 
-  metadata = {"post-build": GetBuildProp("ro.build.fingerprint",
-                                         OPTIONS.info_dict),
-              "pre-device": GetBuildProp("ro.product.device",
-                                         OPTIONS.info_dict),
-              "post-timestamp": GetBuildProp("ro.build.date.utc",
-                                             OPTIONS.info_dict),
+  metadata = {"post-build": GetBuildProp("ro.build.fingerprint", OPTIONS.info_dict),
+              "pre-device": GetBuildProp("ro.product.device", OPTIONS.info_dict),
+              "post-timestamp": GetBuildProp("ro.build.date.utc", OPTIONS.info_dict),
               }
 
   device_specific = common.DeviceSpecificParams(
@@ -57,6 +54,10 @@ def WriteFullOTAPackage(input_zip, output_zip):
       input_tmp=OPTIONS.input_tmp,
       metadata=metadata,
       info_dict=OPTIONS.info_dict)
+
+#  if not OPTIONS.omit_prereq:
+#    ts = GetBuildProp("ro.build.date.utc", input_zip)
+#    script.AssertOlderBuild(ts)
 
   AppendAssertions(script, OPTIONS.info_dict)
   device_specific.FullOTA_Assertions()
@@ -99,6 +100,10 @@ def WriteFullOTAPackage(input_zip, output_zip):
   # -- tenderloin build change done
   script.ShowProgress(0.2, 0)
 
+  if OPTIONS.backuptool:
+    script.ShowProgress(0.2, 10)
+    script.RunBackup("restore")
+
 #  script.RunVerifyCachePartitionSize()
 
   script.ShowProgress(0.2, 10)
@@ -110,15 +115,19 @@ def WriteFullOTAPackage(input_zip, output_zip):
   boot_img.close()
 
   script.Mount("/boot")
+  uimage_clean_command = "for f in `ls /boot/uImage.* | busybox grep -vi 'clockworkmod\|cwm\|moboot\|philz\|toolbox\|twrp\|webos'`; do rm $f; done"
+  script.AppendExtra('run_program("/sbin/sh", "-c", "' + uimage_clean_command + '");')
   script.UnpackPackageFile("boot.img", "/boot/uImage.CyanogenMod")
 
+  splash_clean_command = "rm /boot/moboot.splash.*.tga"
+  script.AppendExtra('run_program("/sbin/sh", "-c", "' + splash_clean_command + '");')
   moboot_tga = open(OPTIONS.device_out + "/moboot.splash.CyanogenMod.tga")
   common.ZipWriteStr(output_zip, "moboot.splash.CyanogenMod.tga", moboot_tga.read())
   moboot_tga.close()
 
   script.UnpackPackageFile("moboot.splash.CyanogenMod.tga", "/boot/moboot.splash.CyanogenMod.tga")
 
-   # -- tenderloin build change done
+  # -- tenderloin build change done
 
   script.ShowProgress(0.1, 0)
   device_specific.FullOTA_InstallEnd()
@@ -133,7 +142,7 @@ ota_from_target_files.WriteFullOTAPackage = WriteFullOTAPackage
 
 
 def WriteIncrementalOTAPackage(target_zip, source_zip, output_zip):
-    print "Incremental OTA Packages are not supported on the hp tenderloin at this time"
+    print "Incremental OTA Packages are not support on the hp tenderloin at this time"
     sys.exit(1)
 ota_from_target_files.WriteIncrementalOTAPackage = WriteIncrementalOTAPackage
 

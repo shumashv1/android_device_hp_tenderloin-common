@@ -119,17 +119,21 @@ PRODUCT_COPY_FILES += \
 
 # Sensors, misc
 PRODUCT_PACKAGES += \
-    power.tenderloin \
-    sensors.tenderloin \
-    lights.tenderloin \
-    ts_srv \
-    ts_srv_set \
-    serial \
-    com.android.future.usb.accessory \
-    wpa_supplicant \
-    wpa_supplicant.conf
-
-#    rebootcmd \
+    	librs_jni \
+	wpa_supplicant \
+	libnetcmdiface \
+	libmllite \
+	libmlplatform \
+	power.tenderloin \
+	sensors.tenderloin \
+	lights.tenderloin \
+	memtrack.msm8660 \
+	ts_srv \
+	ts_srv_set \
+	serial \
+	com.android.future.usb.accessory \
+	rebootcmd \
+	lvm.static
 
 # Camera
 #PRODUCT_PACKAGES += \

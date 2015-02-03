@@ -4,8 +4,8 @@
 # Set true to use custom i.e. linaro, false to use prebuilts
 USE_CUSTOM_TOOLCHAIN := false
 
-# Use Java 1.6
-#LEGACY_USE_JAVA6 := true
+# Allow SELinux to be disabled
+ALLOW_DISABLE_SELINUX := true
 
 TARGET_SPECIFIC_HEADER_PATH := device/hp/tenderloin/include
 
@@ -15,8 +15,8 @@ ART_DONT_CHECK_GAP := true
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_KERNEL := false
-TARGET_NO_RECOVERY_PATCH := true
 TARGET_NO_RADIOIMAGE := true
+TARGET_INVENSENSE_SENSOR := 60xx
 
 TARGET_BOOTLOADER_BOARD_NAME := tenderloin
 TARGET_BOARD_PLATFORM := msm8660
@@ -28,10 +28,12 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := scorpion
-TARGET_CPU_SMP := true
 TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
 
 COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=59 -DNEEDS_VECTORIMPL_SYMBOLS -DICS_CAMERA_BLOB
+
+# use dosfsck from dosfstools
+BOARD_USES_CUSTOM_FSCK_MSDOS := true
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 768
@@ -81,6 +83,9 @@ TARGET_DISPLAY_INSECURE_MM_HEAP := true
 # Use retire fence from MDP driver
 TARGET_DISPLAY_USE_RETIRE_FENCE := true
 
+TARGET_NO_ADAPTIVE_PLAYBACK := true
+BOARD_USES_LEGACY_MMAP := true
+
 # QCOM enhanced A/V
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 
@@ -93,6 +98,7 @@ BOARD_CAMERA_USE_ENCODEDATA := true
 BOARD_USES_LEGACY_MMAP := true
 
 # kernel settings
+KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-4.7/bin
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x40200000
 BOARD_PAGE_SIZE := 2048
@@ -104,6 +110,7 @@ BOARD_CUSTOM_BOOTIMG_MK := device/hp/tenderloin/releasetools/uboot-bootimg.mk
 TARGET_PROVIDES_RELEASETOOLS := true
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_img_from_target_files
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_ota_from_target_files
+TARGET_RELEASETOOL_MAKE_RECOVERY_PATCH_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_make_recovery_patch
 
 # Define kernel config for inline building
 TARGET_KERNEL_CONFIG := cyanogenmod_tenderloin_defconfig
@@ -116,7 +123,7 @@ endif
 
 KERNEL_WIFI_MODULES:
 	$(MAKE) -C external/backports-wireless defconfig-ath6kl
-	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
 	cp `find external/backports-wireless -name *.ko` $(KERNEL_MODULES_OUT)/
 	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
 	$(MAKE) -C external/backports-wireless clean
