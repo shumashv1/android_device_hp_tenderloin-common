@@ -133,6 +133,7 @@ PRODUCT_PACKAGES += \
     ts_srv_set \
     serial \
     com.android.future.usb.accessory \
+    mkbootimg \
     rebootcmd
 
 # Wifi
