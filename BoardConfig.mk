@@ -85,6 +85,7 @@ BOARD_NEEDS_MEMORYHEAPPMEM := true
 
 # kernel settings
 KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/generic/arm-eabi-4.7/bin
+KERNEL_TOOLCHAIN_PREFIX := arm-eabi-
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x40200000
 BOARD_PAGE_SIZE := 2048
@@ -103,7 +104,7 @@ TARGET_KERNEL_CONFIG := cyanogenmod_tenderloin_defconfig
 TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
 KERNEL_WIFI_MODULES:
 	$(MAKE) -C external/backports-wireless defconfig-ath6kl
-	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN)/$(KERNEL_TOOLCHAIN_PREFIX); $(MAKE) -C external/backports-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
 	cp `find external/backports-wireless -name *.ko` $(KERNEL_MODULES_OUT)/
 	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
 	$(MAKE) -C external/backports-wireless clean
