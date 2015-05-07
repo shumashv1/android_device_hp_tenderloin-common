@@ -23,4 +23,4 @@
 # HACK: Create symlink folder to point to proper qcom platform sources
 TOPDIR=$PWD
 
-ln -s -f $TOPDIR/hardware/qcom/audio-caf/msm8960 $TOPDIR/hardware/qcom/audio-caf/msm8660
+#ln -s -f $TOPDIR/hardware/qcom/audio-caf/msm8960 $TOPDIR/hardware/qcom/audio-caf/msm8660
