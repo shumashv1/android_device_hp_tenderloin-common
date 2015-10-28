@@ -58,6 +58,11 @@ BOARD_HAVE_BLUETOOTH_HCI := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/hp/tenderloin/bluetooth
 BLUETOOTH_HCIATTACH_USING_PROPERTY = true
 
+# QCOM BSP Enabled
+TARGET_USES_QCOM_BSP := true
+
+COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE -DICS_CAMERA_BLOB -DQCOM_BSP
+
 # Needed for blobs
 TARGET_RELEASE_CPPFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 
@@ -87,18 +92,23 @@ BOARD_USE_QCOM_PMEM := true
 BOARD_CAMERA_USE_GETBUFFERINFO := true
 BOARD_FIRST_CAMERA_FRONT_FACING := true
 BOARD_CAMERA_USE_ENCODEDATA := true
-BOARD_NEEDS_MEMORYHEAPPMEM := true
+
+# QCOM enhanced A/V
+TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
-
+BOARD_USES_QCOM_GPS := true
+BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
 BOARD_OVERLAY_FORMAT_YCbCr_420_SP := true
 USE_CAMERA_STUB := false
 
 # tenderloin- these kernel settings are temporary to complete build
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom zcache
+KERNEL_TOOLCHAIN_PREFIX := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-4.7/bin/arm-eabi-
+BOARD_KERNEL_CMDLINE := console=none androidboot.hardware=qcom
 BOARD_KERNEL_BASE := 0x40200000
 BOARD_PAGE_SIZE := 2048
+
 BOARD_KERNEL_IMAGE_NAME := uImage
 
 BOARD_NEEDS_CUTILS_LOG := true
@@ -116,7 +126,8 @@ TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
 
 # Kernel
 TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
-TARGET_KERNEL_CONFIG := cyanogenmod_tenderloin_defconfig
+TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
+BOARD_USES_ALT_KMSG_LOCATION := "/proc/last_klog"
 
 TARGET_RECOVERY_INITRC := device/hp/tenderloin/recovery/init.rc
 BOARD_HAS_NO_SELECT_BUTTON := false

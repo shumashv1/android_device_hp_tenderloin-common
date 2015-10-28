@@ -7023,3 +7023,4 @@ extern "C" QualcommCameraHardware* HAL_openCameraHardware(int cameraId)
 
 }; // namespace android
 
+

@@ -35,7 +35,7 @@
 
 extern "C" {
 #include <linux/android_pmem.h>
-#include <media/msm_camera.h>
+#include <media/msm_camera-tenderloin.h>
 #include "QCamera_Intf.h"
 }
 // Extra propriatary stuff (mostly from CM)
@@ -221,18 +221,16 @@ struct board_property{
 namespace android {
 
 struct FPSRange{
-    int minFPS;
-    int maxFPS;
-
-    FPSRange(){
-        minFPS=0;
-        maxFPS=0;
-    };
-
-    FPSRange(int min,int max) {
-        minFPS=min;
-        maxFPS=max;
-    };
+int minFPS;
+int maxFPS;
+FPSRange(){
+minFPS=0;
+maxFPS=0;
+};
+FPSRange(int min,int max){
+minFPS=min;
+maxFPS=max;
+};
 };
 
 class QualcommCameraHardware : public RefBase{
@@ -636,3 +634,4 @@ extern "C" QualcommCameraHardware* HAL_openCameraHardware(int cameraId);
 }; // namespace android
 
 #endif
+
