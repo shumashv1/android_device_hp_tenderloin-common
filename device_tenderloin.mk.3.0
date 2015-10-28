@@ -35,6 +35,11 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/tptoolbox.cfg:tptoolbox.cfg \
     device/hp/tenderloin/configs/HPTouchpad.idc:system/usr/idc/HPTouchpad.idc
 
+# Prebuilt Webview
+    device/hp/tenderloin/prebuilt/chromium/libwebviewchromium.so:prebuilts/chromium/tenderloin/libs/libwebviewchromium.so \
+    device/hp/tenderloin/prebuilt/chromium/libwebviewchromium_loader.so:prebuilts/chromium/tenderloin/libs/libwebviewchromium_loader.so \
+    device/hp/tenderloin/prebuilt/chromium/libwebviewchromium_plat_support.so:prebuilts/chromium/tenderloin/libs/libwebviewchromium_plat_support.so 
+
 # Bluetooth
 PRODUCT_COPY_FILES += \
 	  $(LOCAL_PATH)/bluetooth/bt_vendor.conf:/system/etc/bluetooth/bt_vendor.conf \
@@ -65,7 +70,7 @@ PRODUCT_COPY_FILES += \
 
 # Codecs
 PRODUCT_COPY_FILES += \
-    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+   frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
 
