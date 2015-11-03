@@ -3,7 +3,7 @@ LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
-LOCAL_MODULE := camera.tenderloin
+LOCAL_MODULE := camera.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_TAGS := optional
 LOCAL_PRELINK_MODULE := false
 
@@ -26,12 +26,11 @@ LOCAL_C_INCLUDES := $(TOP)/frameworks/base/include
 LOCAL_C_INCLUDES += $(TARGET_OUT_HEADERS)/mm-camera
 LOCAL_C_INCLUDES += $(TARGET_OUT_HEADERS)/mm-still/jpeg
 LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
+LOCAL_C_INCLUDES += system/media/camera/include
+LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
-LOCAL_C_INCLUDES += $(TOP)/hardware/qcom/display-caf/$(TARGET_BOARD_PLATFORM)/libgralloc \
-                    $(TOP)/hardware/qcom/display-caf/$(TARGET_BOARD_PLATFORM)/libgenlock
-
-LOCAL_C_INCLUDES += \
-    system/media/camera/include
+LOCAL_C_INCLUDES += $(TOP)/hardware/qcom/display-caf/msm8960/libgralloc \
+                    $(TOP)/hardware/qcom/display-caf/msm8960/libgenlock
 
 LOCAL_SHARED_LIBRARIES := libutils libui libcamera_client liblog libcutils
 LOCAL_SHARED_LIBRARIES += libgenlock libbinder libdl libhardware

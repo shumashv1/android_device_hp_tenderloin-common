@@ -15,6 +15,9 @@
 #
 
 PRODUCT_PROPERTY_OVERRIDES += \
+   dalvik.vm.image-dex2oat-filter=speed \
+   dalvik.vm.dex2oat-filter=interpret-only \
+   dalvik.vm.dex2oat-flags=--no-watch-dog \
    ro.sf.lcd_density=160
 
 PRODUCT_CHARACTERISTICS := tablet
@@ -32,6 +35,15 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/boot/moboot.default:moboot.default \
     device/hp/tenderloin/prebuilt/tptoolbox.cfg:tptoolbox.cfg \
     device/hp/tenderloin/configs/HPTouchpad.idc:system/usr/idc/HPTouchpad.idc
+
+# Prebuilt Webview
+PRODUCT_COPY_FILES += \
+    device/hp/tenderloin/prebuilt/chromium/libwebviewchromium.so:prebuilts/chromium/tenderloin/lib/libwebviewchromium.so \
+    device/hp/tenderloin/prebuilt/chromium/libwebviewchromium_loader.so:prebuilts/chromium/tenderloin/lib/libwebviewchromium_loader.so \
+    device/hp/tenderloin/prebuilt/chromium/libwebviewchromium_plat_support.so:prebuilts/chromium/tenderloin/lib/libwebviewchromium_plat_support.so \
+    device/hp/tenderloin/prebuilt/chromium/libwebviewchromium.so:prebuilts/chromium/lib/libwebviewchromium.so \
+    device/hp/tenderloin/prebuilt/chromium/libwebviewchromium_loader.so:prebuilts/chromium/lib/libwebviewchromium_loader.so \
+    device/hp/tenderloin/prebuilt/chromium/libwebviewchromium_plat_support.so:prebuilts/chromium/lib/libwebviewchromium_plat_support.so 
 
 # Bluetooth
 PRODUCT_COPY_FILES += \
@@ -63,7 +75,7 @@ PRODUCT_COPY_FILES += \
 
 # Codecs
 PRODUCT_COPY_FILES += \
-    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+   frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
 
@@ -145,7 +157,7 @@ PRODUCT_PACKAGES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    camera.tenderloin
+    camera.msm8660
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
