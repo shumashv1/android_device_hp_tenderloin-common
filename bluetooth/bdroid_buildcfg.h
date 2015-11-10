@@ -17,7 +17,7 @@
 #ifndef _BDROID_BUILDCFG_H
 #define _BDROID_BUILDCFG_H
 
-#define BTM_DEF_LOCAL_NAME   "HP TouchPad"
+#define BTM_DEF_LOCAL_NAME   "HP Touchpad"
 
 // Networking, Capturing, Object Transfer
 // Major Class: COMPUTER
@@ -25,7 +25,9 @@
 #define BTA_DM_COD {0x1A, 0x01, 0x0C}
 
 #define BTM_BYPASS_EXTRA_ACL_SETUP TRUE
-
+#define BLE_INCLUDED FALSE
+#define BTA_GATT_INCLUDED FALSE
+#define SMP_INCLUDED FALSE
 #define BTM_AUTOMATIC_HCI_RESET TRUE
 
 #endif
