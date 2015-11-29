@@ -29,8 +29,8 @@ LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
 LOCAL_C_INCLUDES += system/media/camera/include
 LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
-LOCAL_C_INCLUDES += $(TOP)/hardware/qcom/display-caf/msm8960/libgralloc \
-                    $(TOP)/hardware/qcom/display-caf/msm8960/libgenlock
+LOCAL_C_INCLUDES += $(TOP)/hardware/qcom/display-caf/$(TARGET_BOARD_PLATFORM)/libgralloc \
+                    $(TOP)/hardware/qcom/display-caf/$(TARGET_BOARD_PLATFORM)/libgenlock
 
 LOCAL_SHARED_LIBRARIES := libutils libui libcamera_client liblog libcutils
 LOCAL_SHARED_LIBRARIES += libgenlock libbinder libdl libhardware

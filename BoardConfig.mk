@@ -1,56 +1,48 @@
 # inherit from the proprietary version
 -include vendor/hp/tenderloin/BoardConfigVendor.mk
 
-TARGET_SPECIFIC_HEADER_PATH := device/hp/tenderloin/include 
-
-# We have so much memory 3:1 split is detrimental to us.
-TARGET_USES_2G_VM_SPLIT := true
+TARGET_SPECIFIC_HEADER_PATH := device/hp/tenderloin/include
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_KERNEL := false
+TARGET_NO_RADIOIMAGE := true
 
 TARGET_BOOTLOADER_BOARD_NAME := tenderloin
 TARGET_BOARD_PLATFORM := msm8660
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
 BOARD_USES_ADRENO_200 := true
 
+TARGET_ARCH := arm
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := scorpion
-TARGET_ARCH := arm
+TARGET_BOOTANIMATION_HALF_RES := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
-TARGET_DISABLE_ARM_PIE := true
-BOARD_NEEDS_MEMORYHEAPPMEM := true
-TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
 
-TARGET_NO_RADIOIMAGE := true
-TARGET_HAVE_TSLIB := false
-TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
-TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
+COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=59 -DICS_CAMERA_BLOB
+TARGET_RELEASE_CPPFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 
-TARGET_RECOVERY_FSTAB := device/hp/tenderloin/fstab.tenderloin
-RECOVERY_FSTAB_VERSION := 2
-TARGET_NO_RECOVERY_PATCH := true
-
-COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=59 -DQCOM_NO_SECURE_PLAYBACK -DICS_CAMERA_BLOB
-
-BOARD_USES_LEGACY_MMAP := true
+# Boot animation
+TARGET_SCREEN_HEIGHT := 768
+TARGET_SCREEN_WIDTH := 1024
 
 # Art
 ART_DONT_CHECK_GAP := true
 LIBART_IMG_BASE := 0x60000000
 
 # Wifi related defines
-BOARD_WPA_SUPPLICANT_DRIVER      	:= NL80211
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB 	:= lib_driver_cmd_ath6kl
-WPA_SUPPLICANT_VERSION           	:= VER_0_8_X
-BOARD_WLAN_DEVICE                	:= ath6kl
-BOARD_NEEDS_WIFI_DELAY			:= true
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_ath6kl
+WPA_SUPPLICANT_VERSION      := VER_0_8_X
+BOARD_WLAN_DEVICE           := ath6kl
+WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/ath6kl.ko"
+WIFI_DRIVER_MODULE_NAME     := "ath6kl"
+WIFI_DRIVER_LOADER_DELAY    := 1000000
 
 # Audio
-COMMON_GLOBAL_CFLAGS += -DHTC_ACOUSTIC_AUDIO -DLEGACY_QCOM_VOICE
 BOARD_USES_LEGACY_ALSA_AUDIO := true
+COMMON_GLOBAL_CFLAGS += -DHTC_ACOUSTIC_AUDIO -DLEGACY_QCOM_VOICE
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -58,40 +50,8 @@ BOARD_HAVE_BLUETOOTH_HCI := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/hp/tenderloin/bluetooth
 BLUETOOTH_HCIATTACH_USING_PROPERTY = true
 
-# QCOM BSP Enabled
-TARGET_USES_QCOM_BSP := true
-
-COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE -DICS_CAMERA_BLOB -DQCOM_BSP
-
-# Needed for blobs
-TARGET_RELEASE_CPPFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
-
 # Define egl.cfg location
 BOARD_EGL_CFG := device/hp/tenderloin/configs/egl.cfg
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
-USE_OPENGL_RENDERER := true
-TARGET_DISPLAY_USE_RETIRE_FENCE := true
-TARGET_USES_C2D_COMPOSITION := true
-TARGET_USES_ION := true
-TARGET_DISPLAY_INSECURE_MM_HEAP := true
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
-TARGET_NO_ADAPTIVE_PLAYBACK := true
-
-# PowerHAL
-TARGET_POWERHAL_VARIANT := cm
-
-# Sensors
-TARGET_INVENSENSE_SENSOR := 60xx
-
-# Webkit workaround
-TARGET_FORCE_CPU_UPLOAD := true
-
-BOARD_USES_QCOM_LIBS := true
-BOARD_USES_QCOM_LIBRPC := true
-BOARD_USE_QCOM_PMEM := true
-BOARD_CAMERA_USE_GETBUFFERINFO := true
-BOARD_FIRST_CAMERA_FRONT_FACING := true
-BOARD_CAMERA_USE_ENCODEDATA := true
 
 # QCOM enhanced A/V
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
@@ -101,55 +61,92 @@ BOARD_USES_QCOM_HARDWARE := true
 BOARD_USES_QCOM_GPS := true
 BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
 BOARD_OVERLAY_FORMAT_YCbCr_420_SP := true
-USE_CAMERA_STUB := false
 
-# tenderloin- these kernel settings are temporary to complete build
-KERNEL_TOOLCHAIN_PREFIX := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-4.7/bin/arm-eabi-
-BOARD_KERNEL_CMDLINE := console=none androidboot.hardware=qcom
+# QCOM BSP Enabled
+TARGET_USES_QCOM_BSP := true
+COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE -DQCOM_BSP
+
+# QCOM HAL
+USE_OPENGL_RENDERER := true
+TARGET_USES_C2D_COMPOSITION := true
+TARGET_USES_ION := true
+
+# enable three buffers at all times
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+
+# Use legacy MM heap behavior
+TARGET_DISPLAY_INSECURE_MM_HEAP := true
+
+# Use retire fence from MDP driver
+TARGET_DISPLAY_USE_RETIRE_FENCE := true
+
+# Sensors
+TARGET_INVENSENSE_SENSOR := 60xx
+
+TARGET_NO_ADAPTIVE_PLAYBACK := true
+BOARD_USES_LEGACY_MMAP := true
+
+# camera
+USE_CAMERA_STUB := false
+TARGET_NEEDS_NON_PIE_SUPPORT := true
+TARGET_DISABLE_ARM_PIE := true
+BOARD_CAMERA_USE_GETBUFFERINFO := true
+BOARD_FIRST_CAMERA_FRONT_FACING := true
+BOARD_CAMERA_USE_ENCODEDATA := true
+TARGET_NEEDS_PRELINK_SUPPORT := true
+BOARD_NEEDS_MEMORYHEAPPMEM := true
+TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
+
+# kernel settings
+TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
+KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-4.7/bin
+KERNEL_TOOLCHAIN_PREFIX := arm-eabi-
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x40200000
 BOARD_PAGE_SIZE := 2048
 
+# uboot
 BOARD_KERNEL_IMAGE_NAME := uImage
-
-BOARD_NEEDS_CUTILS_LOG := true
-
+BOARD_USES_UBOOT_MULTIIMAGE := true
+BOARD_CUSTOM_BOOTIMG_MK := device/hp/tenderloin/releasetools/uboot-bootimg.mk
 TARGET_PROVIDES_RELEASETOOLS := true
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_img_from_target_files
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_ota_from_target_files
 TARGET_RELEASETOOL_MAKE_RECOVERY_PATCH_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_make_recovery_patch
 
-BOARD_USES_UBOOT := true
-BOARD_USES_UBOOT_MULTIIMAGE := true
-
-# Define Prebuilt kernel locations
-TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
-
-# Kernel
+# Define kernel config for inline building
 TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
-TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
-BOARD_USES_ALT_KMSG_LOCATION := "/proc/last_klog"
+KERNEL_WIFI_MODULES:
+	$(MAKE) -C external/backports-wireless defconfig-ath6kl
+	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN)/$(KERNEL_TOOLCHAIN_PREFIX); $(MAKE) -C external/backports-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+	cp `find external/backports-wireless -name *.ko` $(KERNEL_MODULES_OUT)/
+	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
+	$(MAKE) -C external/backports-wireless clean
 
-TARGET_RECOVERY_INITRC := device/hp/tenderloin/recovery/init.rc
-BOARD_HAS_NO_SELECT_BUTTON := false
+TARGET_KERNEL_MODULES := KERNEL_WIFI_MODULES
 
-# tenderloin - these partition sizes are temporary to complete build
+TARGET_RECOVERY_DEVICE_DIRS += device/hp/tenderloin
+BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/hp/tenderloin/recovery/recovery_ui.c
+BOARD_CUSTOM_GRAPHICS:= ../../../device/hp/tenderloin/recovery/graphics.c
+TARGET_RECOVERY_SCREEN_WIDTH := 720
+RECOVERY_FSTAB_VERSION=2
+TARGET_RECOVERY_FSTAB = device/hp/tenderloin/recovery/recovery.fstab
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+BOARD_HAS_NO_MISC_PARTITION := true
+BOARD_HAS_NO_SELECT_BUTTON := true
+
+# partition sizes
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16776192
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16777216
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 838860800
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 20044333056
 BOARD_FLASH_BLOCK_SIZE := 131072
 
-TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
-
-TARGET_RELEASETOOLS_EXTENSIONS := device/hp/common
-
-BOARD_HAS_SDCARD_INTERNAL := false
-BOARD_USES_MMCUTILS := true
-BOARD_HAS_NO_MISC_PARTITION := true
-BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_CUSTOM_BOOTIMG_MK := device/hp/tenderloin/releasetools/uboot-bootimg.mk
+# device specific settings menu
+BOARD_HARDWARE_CLASS := device/hp/tenderloin/cmhw/
 
 # Multiboot stuff
 TARGET_RECOVERY_PRE_COMMAND := "/system/bin/rebootcmd"
+TARGET_RECOVERY_PRE_COMMAND_CLEAR_REASON := true

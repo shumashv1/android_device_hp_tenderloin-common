@@ -3,6 +3,7 @@
 /dev/kgsl-3d0             0666   root       root
 /dev/kgsl-2d0             0666   root       root
 /dev/kgsl-2d1             0666   root       root
+/dev/msm_camera/*         0660   system     audio
 /dev/ttyHS0               0600   bluetooth  bluetooth
 /dev/msm_rotator          0660   system     graphics
 /dev/hw_random            0660   system     system
