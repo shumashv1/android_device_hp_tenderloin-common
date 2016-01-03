@@ -30,15 +30,11 @@
 #include <sys/un.h>
 
 #define SCALING_GOVERNOR_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
-#define BOOSTPULSE_ONDEMAND "/sys/devices/system/cpu/cpufreq/ondemand/boostpulse"
 #define BOOSTPULSE_INTERACTIVE "/sys/devices/system/cpu/cpufreq/interactive/boostpulse"
-#define NOTIFY_ON_MIGRATE "/dev/cpuctl/apps/cpu.notify_on_migrate"
+//#define NOTIFY_ON_MIGRATE "/dev/cpuctl/apps/cpu.notify_on_migrate"
 
 #define TS_SOCKET_LOCATION "/dev/socket/tsdriver"
 #define TS_SOCKET_DEBUG 0
-
-static int ts_state;
-static char governor[20];
 
 struct tenderloin_power_module {
     struct power_module base;
@@ -48,6 +44,7 @@ struct tenderloin_power_module {
 };
 
 static char governor[20];
+static int ts_state;
 
 static int sysfs_read(char *path, char *s, int num_bytes)
 {
@@ -138,42 +135,28 @@ static void send_ts_socket(char *send_data) {
 
 static void tenderloin_power_set_interactive(struct power_module *module, int on)
 {
-    if (strncmp(governor, "ondemand", 8) == 0)
-        sysfs_write(NOTIFY_ON_MIGRATE, on ? "1" : "0");
-
     /* tell touchscreen to turn on or off */
     if (on && ts_state == 0) {
-        ALOGI("Enabling touch screen");
+        ALOGI("Enabling touchscreen");
         ts_state = 1;
         send_ts_socket("O");
     } else if (!on && ts_state == 1) {
-        ALOGI("Disabling touch screen");
+        ALOGI("Disabling touchscreen");
         ts_state = 0;
         send_ts_socket("C");
     }
+
+    //sysfs_write(NOTIFY_ON_MIGRATE, on ? "1" : "0");
 }
 
 static void configure_governor()
 {
     tenderloin_power_set_interactive(NULL, 1);
 
-    if (strncmp(governor, "ondemand", 8) == 0) {
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/up_threshold", "90");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/io_is_busy", "1");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor", "2");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/down_differential", "10");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/up_threshold_multi_core", "70");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/down_differential_multi_core", "3");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/optimal_freq", "918000");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/sync_freq", "1026000");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/up_threshold_any_cpu_load", "80");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/input_boost", "1242000");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/sampling_rate", "50000");
-
-    } else if (strncmp(governor, "interactive", 11) == 0) {
+    if (strncmp(governor, "interactive", 11) == 0) {
         sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/min_sample_time", "90000");
         sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/io_is_busy", "1");
-        sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq", "1242000");
+        sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq", "1134000");
         sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay", "30000");
         sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/timer_rate", "30000");
     }
@@ -190,9 +173,7 @@ static int boostpulse_open(struct tenderloin_power_module *tenderloin)
             ALOGE("Can't read scaling governor.");
             tenderloin->boostpulse_warned = 1;
         } else {
-            if (strncmp(governor, "ondemand", 8) == 0)
-                tenderloin->boostpulse_fd = open(BOOSTPULSE_ONDEMAND, O_WRONLY);
-            else if (strncmp(governor, "interactive", 11) == 0)
+            if (strncmp(governor, "interactive", 11) == 0)
                 tenderloin->boostpulse_fd = open(BOOSTPULSE_INTERACTIVE, O_WRONLY);
 
             if (tenderloin->boostpulse_fd < 0 && !tenderloin->boostpulse_warned) {
@@ -219,7 +200,9 @@ static void tenderloin_power_hint(struct power_module *module, power_hint_t hint
     int duration = 1;
 
     switch (hint) {
+#ifndef NO_TOUCH_BOOST
     case POWER_HINT_INTERACTION:
+#endif
     case POWER_HINT_CPU_BOOST:
         if (boostpulse_open(tenderloin) >= 0) {
             if (data != NULL)
