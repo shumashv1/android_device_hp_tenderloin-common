@@ -158,7 +158,7 @@ PRODUCT_PACKAGES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    camera.tenderloin
+    camera.msm8660
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
