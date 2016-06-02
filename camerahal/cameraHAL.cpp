@@ -176,10 +176,11 @@ int camera_set_preview_window(struct camera_device * device,
                               struct preview_stream_ops *window)
 {
     priv_camera_device_t* dev = NULL;
-    ALOGI("%s+++,device %p", __FUNCTION__,device);
 
     if(!device)
         return -EINVAL;
+
+    ALOGI("%s+++,device %p", __FUNCTION__,device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -198,10 +199,11 @@ void camera_set_callbacks(struct camera_device * device,
 {
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++,device %p", __FUNCTION__,device);
 
     if(!device)
         return;
+
+    ALOGI("%s+++,device %p", __FUNCTION__,device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -214,7 +216,6 @@ void camera_enable_msg_type(struct camera_device * device, int32_t msg_type)
 {
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: type %i device %p", __FUNCTION__, msg_type,device);
     if (msg_type & CAMERA_MSG_RAW_IMAGE_NOTIFY) {
         msg_type &= ~CAMERA_MSG_RAW_IMAGE_NOTIFY;
         msg_type |= CAMERA_MSG_RAW_IMAGE;
@@ -224,6 +225,8 @@ void camera_enable_msg_type(struct camera_device * device, int32_t msg_type)
 
     if(!device)
         return;
+
+    ALOGI("%s+++: type %i device %p", __FUNCTION__, msg_type,device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -236,11 +239,12 @@ void camera_disable_msg_type(struct camera_device * device, int32_t msg_type)
 {
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: type %i device %p", __FUNCTION__, msg_type,device);
     dump_msg(__FUNCTION__, msg_type);
 
     if(!device)
         return;
+
+    ALOGI("%s+++: type %i device %p", __FUNCTION__, msg_type,device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -259,10 +263,10 @@ int camera_msg_type_enabled(struct camera_device * device, int32_t msg_type)
     priv_camera_device_t* dev = NULL;
     int rv = -EINVAL;
 
-    ALOGI("%s+++: type %i device %p", __FUNCTION__, msg_type,device);
-
     if(!device)
         return 0;
+
+    ALOGI("%s+++: type %i device %p", __FUNCTION__, msg_type,device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -276,10 +280,10 @@ int camera_start_preview(struct camera_device * device)
     int rv = -EINVAL;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -293,10 +297,10 @@ void camera_stop_preview(struct camera_device * device)
 {
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -309,10 +313,10 @@ int camera_preview_enabled(struct camera_device * device)
     int rv = -EINVAL;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -328,10 +332,10 @@ int camera_store_meta_data_in_buffers(struct camera_device * device, int enable)
     int rv = -EINVAL;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -347,10 +351,10 @@ int camera_start_recording(struct camera_device * device)
     int rv = -EINVAL;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -364,10 +368,10 @@ void camera_stop_recording(struct camera_device * device)
 {
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -381,10 +385,10 @@ int camera_recording_enabled(struct camera_device * device)
     int rv = -EINVAL;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -399,10 +403,10 @@ void camera_release_recording_frame(struct camera_device * device,
 {
     priv_camera_device_t* dev = NULL;
 
-    ALOGV("%s+++: device %p, opaque %p", __FUNCTION__, device, opaque);
-
     if (!device)
         return;
+
+    ALOGV("%s+++: device %p, opaque %p", __FUNCTION__, device, opaque);
 
     dev = (priv_camera_device_t*) device;
 
@@ -416,10 +420,10 @@ int camera_auto_focus(struct camera_device * device)
     int rv = -EINVAL;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -434,10 +438,10 @@ int camera_cancel_auto_focus(struct camera_device * device)
     int rv = -EINVAL;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -452,10 +456,10 @@ int camera_take_picture(struct camera_device * device)
     int rv = -EINVAL;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -475,10 +479,10 @@ int camera_cancel_picture(struct camera_device * device)
     int rv = -EINVAL;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -494,10 +498,10 @@ int camera_set_parameters(struct camera_device * device, const char *params)
     priv_camera_device_t* dev = NULL;
     CameraParameters camParams;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -531,10 +535,10 @@ char* camera_get_parameters(struct camera_device * device)
     String8 params_str8;
     CameraParameters camParams;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return NULL;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -575,11 +579,11 @@ int camera_send_command(struct camera_device * device,
     int rv = -EINVAL;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s: cmd %i, arg1: %i arg2: %i, device %p", __FUNCTION__,
-        cmd, arg1, arg2, device);
-
     if(!device)
         return rv;
+
+    ALOGI("%s: cmd %i, arg1: %i arg2: %i, device %p", __FUNCTION__,
+        cmd, arg1, arg2, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -593,10 +597,10 @@ void camera_release(struct camera_device * device)
 {
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     if(!device)
         return;
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
@@ -627,14 +631,14 @@ int camera_device_close(hw_device_t* device)
     int ret = 0;
     priv_camera_device_t* dev = NULL;
 
-    ALOGI("%s+++: device %p", __FUNCTION__, device);
-
     //android::Mutex::Autolock lock(gCameraDeviceLock);
 
     if (!device) {
         ret = -EINVAL;
         goto done;
     }
+
+    ALOGI("%s+++: device %p", __FUNCTION__, device);
 
     dev = (priv_camera_device_t*) device;
 
