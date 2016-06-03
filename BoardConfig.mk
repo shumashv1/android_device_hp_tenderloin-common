@@ -1,7 +1,7 @@
 # inherit from the proprietary version
 -include vendor/hp/tenderloin/BoardConfigVendor.mk
 
-TARGET_SPECIFIC_HEADER_PATH := device/hp/tenderloin-common/include 
+TARGET_SPECIFIC_HEADER_PATH := device/hp/tenderloin/include 
 
 #art Required to prevent overlapping of memory
 LIBART_IMG_BASE := 0x60000000
@@ -34,7 +34,7 @@ TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_HCI := true
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/hp/tenderloin-common/bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/hp/tenderloin/bluetooth
 BLUETOOTH_HCIATTACH_USING_PROPERTY = true
 
 TARGET_NO_RADIOIMAGE := true
@@ -51,6 +51,7 @@ COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE -DICS_CAMERA_BLOB -DQCOM_BSP
 
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER      := NL80211
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_ath6kl
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
 BOARD_WLAN_DEVICE           := ath6kl
 WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/ath6kl.ko"
@@ -104,8 +105,8 @@ KERNEL_TOOLCHAIN_PREFIX := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TA
 BOARD_NEEDS_CUTILS_LOG := true
 
 TARGET_PROVIDES_RELEASETOOLS := true
-TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/hp/tenderloin-common/releasetools/tenderloin_img_from_target_files
-TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/hp/tenderloin-common/releasetools/tenderloin_ota_from_target_files
+TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_img_from_target_files
+TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/hp/tenderloin/releasetools/tenderloin_ota_from_target_files
 
 BOARD_USES_UBOOT := true
 BOARD_USES_UBOOT_MULTIIMAGE := true
@@ -113,8 +114,17 @@ BOARD_USES_UBOOT_MULTIIMAGE := true
 # use dosfsck from dosfstools
 BOARD_USES_CUSTOM_FSCK_MSDOS := true
 
+# Define Prebuilt kernel locations
+TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
+
+ifdef RECOVERY_BUILD
+TARGET_KERNEL_CONFIG := tenderloin_recovery_defconfig
+else
+TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
+endif
+
 # Kernel
-TARGET_KERNEL_SOURCE := kernel/htc/msm8960
+TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
 KERNEL_WIFI_MODULES:
 	$(MAKE) -C external/backports-wireless defconfig-ath6kl
 	export CROSS_COMPILE=$(KERNEL_TOOLCHAIN)/$(KERNEL_TOOLCHAIN_PREFIX); $(MAKE) -C external/backports-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
@@ -142,13 +152,13 @@ BOARD_HAS_SDCARD_INTERNAL := false
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_CUSTOM_GRAPHICS:= ../../../device/hp/tenderloin-common/graphics.c
-BOARD_CUSTOM_BOOTIMG_MK := device/hp/tenderloin-common/uboot-bootimg.mk
+BOARD_CUSTOM_GRAPHICS:= ../../../device/hp/tenderloin/graphics.c
+BOARD_CUSTOM_BOOTIMG_MK := device/hp/tenderloin/uboot-bootimg.mk
 
 ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0
 
 # Twrp
-TARGET_RECOVERY_DEVICE_DIRS := device/hp/tenderloin-common
+TARGET_RECOVERY_DEVICE_DIRS := device/hp/tenderloin
 DEVICE_RESOLUTION = 1024x768
 RECOVERY_SDCARD_ON_DATA := true
 BOARD_HAS_NO_REAL_SDCARD := true
@@ -165,7 +175,7 @@ TW_WHITELIST_INPUT := "HPTouchpad"
 TW_NO_CPU_TEMP := true
 
 ifndef RECOVERY_BUILD
-TARGET_RECOVERY_FSTAB := device/hp/tenderloin-common/fstab.tenderloin
+TARGET_RECOVERY_FSTAB := device/hp/tenderloin/fstab.tenderloin
 endif
 
 # Multiboot stuff
@@ -173,5 +183,5 @@ TARGET_RECOVERY_PRE_COMMAND := "/system/bin/rebootcmd"
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \
-        device/hp/tenderloin-common/sepolicy
+        device/hp/tenderloin/sepolicy
 

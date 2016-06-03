@@ -1,1 +1,7 @@
 allow healthd rootfs:file entrypoint;
+#============= dex2oat ==============
+allow dex2oat kernel:system module_request;
+
+#============= system_server ==============
+allow system_server socket_device:sock_file write;
+
