@@ -23,6 +23,6 @@
 # HACK: Create symlink folder to point to proper qcom platform sources
 TOPDIR=$PWD
 add_lunch_combo pac_tenderloin-userdebug
-ln -s -f $TOPDIR/hardware/qcom/audio-caf/msm8960 $TOPDIR/hardware/qcom/audio-caf/msm8660
-ln -s -f $TOPDIR/hardware/qcom/display-caf/msm8960 $TOPDIR/hardware/qcom/display-caf/msm8660
-ln -s -f $TOPDIR/hardware/qcom/media-caf/msm8960 $TOPDIR/hardware/qcom/media-caf/msm8660
+#ln -s -f $TOPDIR/hardware/qcom/audio-caf/msm8960 $TOPDIR/hardware/qcom/audio-caf/msm8660
+#ln -s -f $TOPDIR/hardware/qcom/display-caf/msm8960 $TOPDIR/hardware/qcom/display-caf/msm8660
+#ln -s -f $TOPDIR/hardware/qcom/media-caf/msm8960 $TOPDIR/hardware/qcom/media-caf/msm8660
