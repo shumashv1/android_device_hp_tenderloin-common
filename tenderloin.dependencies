@@ -3,7 +3,7 @@
     "remote":       "github",
     "repository":   "shumashv1/android_kernel-3.4_hp_tenderloin",
     "target_path":  "kernel/hp/tenderloin",
-    "revision":     "pac-6.0"
+    "revision":     "pac-6.0_htc"
  },
  {
     "remote":       "github",
@@ -21,37 +21,31 @@
     "remote":       "ss",
     "repository":   "android_device_qcom_common",
     "target_path":  "device/qcom/common",
-    "revision":     "pac-6.0"
- },
- {
-    "remote":       "github",
-    "repository":   "UnORoms/android_hardware_qcom_display-caf_msm8660",
-    "target_path":  "hardware/qcom/display-caf-msm8660",
-    "revision":     "cm-13.0"
- },
- {
-    "remote":       "github",
-    "repository":   "UnORoms/android_hardware_qcom_media-caf_msm8660",
-    "target_path":  "hardware/qcom/media-caf-msm8660",
-    "revision":     "cm-13.0"
- },
- {
-    "remote":       "github",
-    "repository":   "UnORoms/android_hardware_qcom_audio-caf_msm8660",
-    "target_path":  "hardware/qcom/audio-caf-msm8660",
-    "revision":     "cm-13.0"
+    "revision":     "pac-5.1"
  },
  {
     "remote":       "ss",
     "repository":   "android_external_backports-wireless",
     "target_path":  "external/backports-wireless",
-    "revision":     "pac-5.1"
+    "revision":     "pac-6.0"
  },
  {
-    "remote":       "aosp",
-    "repository":   "platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7",
-    "target_path":  "prebuilts/gcc/linux-x86/arm/arm-eabi-4.7",
-    "revision":     "master"
+    "remote":       "pac",
+    "repository":   "android_hardware_qcom_display",
+    "target_path":  "hardware/qcom/display-caf/msm8660",
+    "revision":     "pac-6.0-caf-8660"
+ },
+ {
+    "remote":       "pac",
+    "repository":   "android_hardware_qcom_media",
+    "target_path":  "hardware/qcom/media-caf/msm8660",
+    "revision":     "pac-6.0-caf-8660"
+ },
+ {
+    "remote":       "pac",
+    "repository":   "android_hardware_qcom_audio",
+    "target_path":  "hardware/qcom/audio-caf/msm8660",
+    "revision":     "pac-6.0-caf-8660"
  },
  {
     "remote":       "pic",

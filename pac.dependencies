@@ -21,31 +21,31 @@
     "remote":       "ss",
     "repository":   "android_device_qcom_common",
     "target_path":  "device/qcom/common",
-    "revision":     "pac-6.0"
+    "revision":     "pac-5.1"
  },
  {
     "remote":       "ss",
     "repository":   "android_external_backports-wireless",
     "target_path":  "external/backports-wireless",
-    "revision":     "pac-5.1"
+    "revision":     "pac-6.0"
  },
  {
-    "remote":       "github",
-    "repository":   "Evervolv/android_hardware_qcom_display-caf",
+    "remote":       "pac",
+    "repository":   "android_hardware_qcom_display",
     "target_path":  "hardware/qcom/display-caf/msm8660",
-    "revision":     "mm-6.0-8960"
+    "revision":     "pac-6.0-caf-8660"
  },
  {
-    "remote":       "github",
-    "repository":   "Evervolv/android_hardware_qcom_media-caf",
+    "remote":       "pac",
+    "repository":   "android_hardware_qcom_media",
     "target_path":  "hardware/qcom/media-caf/msm8660",
-    "revision":     "mm-6.0-8960"
+    "revision":     "pac-6.0-caf-8660"
  },
  {
-    "remote":       "github",
-    "repository":   "Evervolv/android_hardware_qcom_audio-caf",
+    "remote":       "pac",
+    "repository":   "android_hardware_qcom_audio",
     "target_path":  "hardware/qcom/audio-caf/msm8660",
-    "revision":     "mm-6.0-8960"
+    "revision":     "pac-6.0-caf-8660"
  },
  {
     "remote":       "pic",
