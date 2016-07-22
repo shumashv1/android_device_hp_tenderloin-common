@@ -3,7 +3,7 @@
     "remote":       "github",
     "repository":   "shumashv1/android_kernel-3.4_hp_tenderloin",
     "target_path":  "kernel/hp/tenderloin",
-    "revision":     "pac-6.0_htc"
+    "revision":     "pac-6.0"
  },
  {
     "remote":       "github",
@@ -21,10 +21,10 @@
     "remote":       "ss",
     "repository":   "android_device_qcom_common",
     "target_path":  "device/qcom/common",
-    "revision":     "pac-5.1"
+    "revision":     "mm-6.0"
  },
  {
-    "remote":       "ss",
+    "remote":       "pac",
     "repository":   "android_external_backports-wireless",
     "target_path":  "external/backports-wireless",
     "revision":     "pac-6.0"
