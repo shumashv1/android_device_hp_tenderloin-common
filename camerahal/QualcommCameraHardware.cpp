@@ -22,10 +22,10 @@
 #include <utils/Log.h>
 
 #include "QualcommCameraHardware.h"
+#include "MemoryHeapPmem.h"
 
 #include <utils/Errors.h>
 #include <utils/threads.h>
-#include <binder/MemoryHeapPmem.h>
 #include <camera/Camera.h>
 #include <hardware/camera.h>
 #include <utils/String16.h>
