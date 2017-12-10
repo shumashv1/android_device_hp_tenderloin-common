@@ -43,10 +43,9 @@
 #define TS_SOCKET_LOCATION "/dev/socket/tsdriver"
 #define TS_SOCKET_DEBUG 0
 
-#define POWERSAVE_MIN_FREQ 384000
-#define POWERSAVE_MAX_FREQ 1026000
-#define BIAS_PERF_MIN_FREQ 1134000
-#define NORMAL_MAX_FREQ 1512000
+#define LOW_POWER_MAX_FREQ "1026000"
+#define LOW_POWER_MIN_FREQ "384000"
+#define NORMAL_MAX_FREQ "1512000"
 
 #define MAX_FREQ_LIMIT_PATH "/sys/kernel/cpufreq_limit/limited_max_freq"
 #define MIN_FREQ_LIMIT_PATH "/sys/kernel/cpufreq_limit/limited_min_freq"
@@ -57,18 +56,8 @@ static int last_state = -1;
 
 static int ts_state;
 
-static pthread_mutex_t profile_lock = PTHREAD_MUTEX_INITIALIZER;
-
-enum {
-    PROFILE_POWER_SAVE = 0,
-    PROFILE_BALANCED,
-    PROFILE_HIGH_PERFORMANCE,
-    PROFILE_BIAS_POWER,
-    PROFILE_BIAS_PERFORMANCE,
-    PROFILE_MAX
-};
-
-static int current_power_profile = PROFILE_BALANCED;
+static bool low_power_mode = false;
+static pthread_mutex_t low_power_mode_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static void socket_init()
 {
@@ -126,13 +115,6 @@ static int sysfs_write(const char *path, char *s)
 
     close(fd);
     return 0;
-}
-
-static int sysfs_write_int(char *path, int value)
-{
-    char buf[80];
-    snprintf(buf, 80, "%d", value);
-    return sysfs_write(path, buf);
 }
 
 static void power_init(__attribute__((unused)) struct power_module *module)
@@ -244,54 +226,10 @@ static void power_set_interactive(__attribute__((unused)) struct power_module *m
     }
 }
 
-static void set_power_profile(int profile) {
-    int min_freq = POWERSAVE_MIN_FREQ;
-    int max_freq = NORMAL_MAX_FREQ;
-
-    ALOGV("%s: profile=%d", __func__, profile);
-
-    switch (profile) {
-    case PROFILE_HIGH_PERFORMANCE:
-        min_freq = NORMAL_MAX_FREQ;
-        max_freq = NORMAL_MAX_FREQ;
-        break;
-    case PROFILE_BIAS_PERFORMANCE:
-        min_freq = BIAS_PERF_MIN_FREQ;
-        max_freq = NORMAL_MAX_FREQ;
-        break;
-    case PROFILE_BIAS_POWER:
-        min_freq = POWERSAVE_MIN_FREQ;
-        max_freq = POWERSAVE_MAX_FREQ;
-        break;
-    case PROFILE_POWER_SAVE:
-        min_freq = POWERSAVE_MIN_FREQ;
-        max_freq = POWERSAVE_MAX_FREQ;
-        break;
-    default:
-        break;
-    }
-
-    sysfs_write_int(MIN_FREQ_LIMIT_PATH, min_freq);
-    sysfs_write_int(MAX_FREQ_LIMIT_PATH, max_freq);
-
-    current_power_profile = profile;
-
-    ALOGD("%s: set power profile mode: %d", __func__, current_power_profile);
-}
-
 static void power_hint( __attribute__((unused)) struct power_module *module,
                       power_hint_t hint, void *data)
 {
-    if (hint == POWER_HINT_SET_PROFILE) {
-        pthread_mutex_lock(&profile_lock);
-        set_power_profile(*(int32_t *)data);
-        pthread_mutex_unlock(&profile_lock);
-        return;
-    }
-
-    // Skip other hints in powersave mode
-    if (current_power_profile == PROFILE_POWER_SAVE)
-        return;
+    int cpu, ret;
 
     switch (hint) {
         case POWER_HINT_INTERACTION:
@@ -301,23 +239,58 @@ static void power_hint( __attribute__((unused)) struct power_module *module,
         case POWER_HINT_VIDEO_ENCODE:
             process_video_encode_hint(data);
             break;
+
+        case POWER_HINT_LOW_POWER:
+             pthread_mutex_lock(&low_power_mode_lock);
+             if (*(int32_t *)data) {
+                 low_power_mode = true;
+                 sysfs_write(MIN_FREQ_LIMIT_PATH, LOW_POWER_MIN_FREQ);
+                 sysfs_write(MAX_FREQ_LIMIT_PATH, LOW_POWER_MAX_FREQ);
+             } else {
+                 low_power_mode = false;
+                 sysfs_write(MAX_FREQ_LIMIT_PATH, NORMAL_MAX_FREQ);
+             }
+             pthread_mutex_unlock(&low_power_mode_lock);
+             break;
         default:
             break;
     }
 }
 
-static struct hw_module_methods_t power_module_methods = {
-    .open = NULL,
-};
-
-static int get_feature(__attribute__((unused)) struct power_module *module,
-                       feature_t feature)
+static int power_open(const hw_module_t* module, const char* name,
+                    hw_device_t** device)
 {
-    if (feature == POWER_FEATURE_SUPPORTED_PROFILES)
-        return PROFILE_MAX;
+    ALOGD("%s: enter; name=%s", __FUNCTION__, name);
+    int retval = 0; /* 0 is ok; -1 is error */
 
-    return -1;
+    if (strcmp(name, POWER_HARDWARE_MODULE_ID) == 0) {
+        power_module_t *dev = (power_module_t *)calloc(1,
+                sizeof(power_module_t));
+
+        if (dev) {
+            /* Common hw_device_t fields */
+            dev->common.tag = HARDWARE_MODULE_TAG;
+            dev->common.module_api_version = POWER_MODULE_API_VERSION_0_2;
+            dev->common.module_api_version = HARDWARE_HAL_API_VERSION;
+
+            dev->init = power_init;
+            dev->setInteractive = power_set_interactive;
+            dev->powerHint = power_hint;
+
+            *device = (hw_device_t*)dev;
+        } else
+            retval = -ENOMEM;
+    } else {
+        retval = -EINVAL;
+    }
+
+    ALOGD("%s: exit %d", __FUNCTION__, retval);
+    return retval;
 }
+
+static struct hw_module_methods_t power_module_methods = {
+    .open = power_open,
+};
 
 struct power_module HAL_MODULE_INFO_SYM = {
     .common = {
@@ -333,5 +306,4 @@ struct power_module HAL_MODULE_INFO_SYM = {
     .init = power_init,
     .setInteractive = power_set_interactive,
     .powerHint = power_hint,
-    .getFeature = get_feature
 };

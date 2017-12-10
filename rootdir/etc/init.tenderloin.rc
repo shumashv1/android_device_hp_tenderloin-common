@@ -8,8 +8,6 @@ on early-init
 
     symlink /data/tombstones /tombstones
 
-    start serial
-
 on init
     # Set permissions for persist partition
     mkdir /persist 0771 system system
@@ -79,6 +77,9 @@ on boot
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
     chmod 0660 /sys/class/rfkill/rfkill0/state
+
+    # Wifi firmware reload path
+    chown wifi wifi /sys/module/wlan/parameters/fwpath
 
     # fmtx
     chown bluetooth bluetooth /sys/class/rfkill/rfkill1/type
@@ -213,7 +214,7 @@ on post-fs-data
 on property:ro.data.large_tcp_window_size=true
     write /proc/sys/net/ipv4/tcp_adv_win_scale  1
 
-service wpa_supplicant /system/bin/wpa_supplicant \
+service wpa_supplicant /vendor/bin/hw/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
     -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
@@ -231,17 +232,15 @@ service tsdriver /system/bin/ts_srv
     user root
     critical
 
-service serial /sbin/serial
-    class core
-    disabled
-    oneshot
-
 service reboot_recovery /system/bin/moboot_control.sh recovery
      class core
      user root
      group root
      disabled
      oneshot
+
+on property:sys.shutdown.requested=1recovery
+    start reboot_recovery
 
 # Limit to SoC reset (1) and independent SSR (3)
 on property:persist.sys.ssr.restart_level=1
